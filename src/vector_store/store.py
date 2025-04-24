@@ -10,7 +10,7 @@ from typing import Dict, List, Optional, Union, Any
 
 import chromadb
 from chromadb.config import Settings
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain.schema import Document
 
 from src.config import CHROMA_DB_DIR, DISTANCE_METRIC, SEARCH_TOP_K

@@ -102,6 +102,10 @@ class TestResponseGenerator:
             return_value=self.mock_llm
         )
         self.mock_chat_openai = self.llm_patcher.start()
+
+        # Patch the API key
+        self.api_key_patcher = patch('src.llm.response_generator.OPENAI_API_KEY', None)
+        self.api_key_patcher.start()
         
         # Create the response generator
         self.response_generator = ResponseGenerator(
@@ -112,6 +116,7 @@ class TestResponseGenerator:
     def teardown_method(self):
         """Clean up after tests."""
         self.llm_patcher.stop()
+        self.api_key_patcher.stop()
     
     def test_initialization(self):
         """Test initialization of the response generator."""

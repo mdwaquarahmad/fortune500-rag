@@ -188,6 +188,7 @@ def ask_question(question, company_filter=None, year_filter=None):
             "content": result["response"],
             "sources": result.get("sources", [])
         })
+        logger.info(f"Added assistant response to chat history: {result['response'][:100]}...")
     except Exception as e:
         # Add error message to chat history
         logger.error(f"Error processing question: {e}", exc_info=True)

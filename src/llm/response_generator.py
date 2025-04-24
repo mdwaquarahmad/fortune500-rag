@@ -78,6 +78,9 @@ class ResponseGenerator:
         try:
             logger.info(f"Generating response for query: {query}")
             response = self.llm.invoke(prompt)
+            logger.info(f"Raw LLM response received: {response}")
+            logger.info(f"Response content type: {type(response.content)}")
+            logger.info(f"Response content: {response.content[:100]}...")  # Log first 100 chars
             response_text = response.content
             
             # Create the result object

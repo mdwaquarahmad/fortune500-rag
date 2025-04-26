@@ -41,7 +41,7 @@ if TESSERACT_PATH:
 
 # Vector DB settings
 DISTANCE_METRIC = "cosine"
-SEARCH_TOP_K = 5
+SEARCH_TOP_K = 15
 
 # LLM settings
 TEMPERATURE = 0.1

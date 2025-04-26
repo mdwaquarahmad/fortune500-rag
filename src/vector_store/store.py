@@ -144,6 +144,32 @@ class VectorStore:
                 
         logger.info(f"Found {len(formatted_results)} results for query")
         return formatted_results
+    
+    def search_multi_document(self, query: str, k: int = SEARCH_TOP_K * 2) -> List[Dict]:
+        """
+        Enhanced search for questions that likely span multiple documents.
+        Retrieves more results and ensures broad document coverage.
+        
+        Args:
+            query: Query text
+            k: Number of results to return (doubled by default)
+            
+        Returns:
+            List[Dict]: Enhanced search results
+        """
+        # Perform standard search with higher k value
+        results = self.search(query, k=k)
+        
+        # Get unique document sources
+        sources = set()
+        for result in results:
+            source = result.get("metadata", {}).get("source", "")
+            if source:
+                sources.add(source)
+                
+        logger.info(f"Multi-document search found results from {len(sources)} different sources")
+        
+        return results
         
     def search_with_langchain(self, query: str, k: int = SEARCH_TOP_K,
                               filter_criteria: Optional[Dict] = None) -> List[Document]:

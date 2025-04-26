@@ -27,6 +27,8 @@ INSTRUCTIONS:
 4. Provide a concise, accurate response that directly addresses the user's question.
 5. Format your response in a clear, readable way.
 6. If the question is about financial data, include specific numbers and percentages from the context when available.
+7. If you encounter poorly formatted numbers or text in the context, correct and format them properly in your response.
+8. If the retrieved information comes from multiple documents or sources, synthesize it into a coherent answer that addresses all relevant aspects of the question.
 
 YOUR ANSWER:
 """
@@ -99,12 +101,6 @@ def format_document_context(retrieved_docs):
             source_info.append(f"Company: {metadata['company']}")
         if "year" in metadata:
             source_info.append(f"Year: {metadata['year']}")
-        if "source" in metadata:
-            source_info.append(f"Document: {metadata['source']}")
-        if "page" in metadata:
-            source_info.append(f"Page: {metadata['page']}")
-        if "section" in metadata:
-            source_info.append(f"Section: {metadata['section']}")
             
         # Combine source information
         source_text = ", ".join(source_info)

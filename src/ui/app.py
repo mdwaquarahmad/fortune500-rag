@@ -25,21 +25,29 @@ from src.config import STREAMLIT_TITLE, STREAMLIT_DESCRIPTION, UPLOAD_DIR
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Set page configuration globally
+st.set_page_config(
+    page_title="Fortune 500 RAG Chatbot",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # Initialize session state variables
-def init_session_state():
-    """Initialize Streamlit session state variables."""
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-    if "document_processor" not in st.session_state:
-        st.session_state.document_processor = None
-    if "vector_store" not in st.session_state:
-        st.session_state.vector_store = None
-    if "embedding_generator" not in st.session_state:
-        st.session_state.embedding_generator = None
-    if "response_generator" not in st.session_state:
-        st.session_state.response_generator = None
-    if "processing_status" not in st.session_state:
-        st.session_state.processing_status = None
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+if "document_processor" not in st.session_state:
+    st.session_state.document_processor = None
+if "vector_store" not in st.session_state:
+    st.session_state.vector_store = None
+if "embedding_generator" not in st.session_state:
+    st.session_state.embedding_generator = None
+if "response_generator" not in st.session_state:
+    st.session_state.response_generator = None
+if "processing_status" not in st.session_state:
+    st.session_state.processing_status = None
+if "files_uploaded" not in st.session_state:
+    st.session_state.files_uploaded = False
 
 def initialize_components():
     """Initialize all RAG components."""
@@ -99,9 +107,8 @@ def process_uploaded_file(uploaded_file):
         doc_ids = vector_store.add_documents(chunks)
         
         # Update status
-        st.session_state.processing_status = f"Successfully processed {uploaded_file.name} ({len(chunks)} chunks)"
-        time.sleep(2)  # Show success message briefly
-        st.session_state.processing_status = None
+        st.session_state.processing_status = f"Successfully processed {uploaded_file.name}"
+        st.session_state.files_uploaded = True
         
         return True
     except Exception as e:
@@ -110,39 +117,33 @@ def process_uploaded_file(uploaded_file):
         logger.error(f"Error processing file: {e}", exc_info=True)
         return False
 
-def get_available_metadata_filters():
+def deduplicate_sources(sources):
     """
-    Get available metadata filters from the uploaded documents.
-    
-    Returns:
-        Dict: Dictionary of available filter options
-    """
-    loader = st.session_state.document_processor["loader"]
-    files = loader.get_file_list()
-    
-    companies = set()
-    years = set()
-    
-    for file in files:
-        metadata = file.get("metadata", {})
-        if "company" in metadata:
-            companies.add(metadata["company"])
-        if "year" in metadata:
-            years.add(metadata["year"])
-    
-    return {
-        "companies": sorted(list(companies)),
-        "years": sorted(list(years))
-    }
-
-def ask_question(question, company_filter=None, year_filter=None):
-    """
-    Process a user question and generate a response.
+    Remove duplicate sources based on document name.
     
     Args:
-        question: User's question
-        company_filter: Optional company filter
-        year_filter: Optional year filter
+        sources: List of source dictionaries
+        
+    Returns:
+        List: Deduplicated sources
+    """
+    if not sources:
+        return []
+        
+    unique_sources = []
+    seen_documents = set()
+    
+    for source in sources:
+        doc_name = source.get("source", "")
+        if doc_name and doc_name not in seen_documents:
+            seen_documents.add(doc_name)
+            unique_sources.append(source)
+    
+    return unique_sources[:3]  # Limit to top 3 sources for simplicity
+
+def ask_question(question):
+    """
+    Process a user question and generate a response.
     """
     if not question.strip():
         return
@@ -150,37 +151,23 @@ def ask_question(question, company_filter=None, year_filter=None):
     # Add user message to chat history
     st.session_state.chat_history.append({"role": "user", "content": question})
     
-    # Prepare filter criteria
-    filter_criteria = {}
-    filter_info = {"applied": False}
-    
-    if company_filter:
-        filter_criteria["company"] = company_filter
-        filter_info["company"] = company_filter
-        filter_info["applied"] = True
-    
-    if year_filter:
-        filter_criteria["year"] = year_filter
-        filter_info["year"] = year_filter
-        filter_info["applied"] = True
-    
     try:
         # Search for relevant documents
         with st.spinner("Searching for relevant information..."):
             vector_store = st.session_state.vector_store
-            search_results = vector_store.search(
-                question,
-                filter_criteria=filter_criteria if filter_criteria else None
-            )
+            search_results = vector_store.search(question)
         
         # Generate response
         with st.spinner("Generating response..."):
             response_generator = st.session_state.response_generator
             result = response_generator.generate_response(
                 question,
-                search_results,
-                filter_info if filter_info["applied"] else None
+                search_results
             )
+        
+        # Deduplicate sources
+        if "sources" in result:
+            result["sources"] = deduplicate_sources(result["sources"])
         
         # Add assistant response to chat history
         st.session_state.chat_history.append({
@@ -188,7 +175,8 @@ def ask_question(question, company_filter=None, year_filter=None):
             "content": result["response"],
             "sources": result.get("sources", [])
         })
-        logger.info(f"Added assistant response to chat history: {result['response'][:100]}...")
+        logger.info(f"Added response to chat history")
+        
     except Exception as e:
         # Add error message to chat history
         logger.error(f"Error processing question: {e}", exc_info=True)
@@ -197,171 +185,80 @@ def ask_question(question, company_filter=None, year_filter=None):
             "content": f"I'm sorry, I encountered an error: {str(e)}"
         })
 
-def clear_chat_history():
+def clear_chat():
     """Clear the chat history."""
     st.session_state.chat_history = []
 
-def export_chat_history():
-    """Export chat history to a CSV file."""
-    if not st.session_state.chat_history:
-        st.warning("No chat history to export.")
-        return
-    
-    # Convert chat history to DataFrame
-    data = []
-    for msg in st.session_state.chat_history:
-        data.append({
-            "role": msg["role"],
-            "content": msg["content"],
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        })
-    
-    df = pd.DataFrame(data)
-    
-    # Create CSV download link
-    csv = df.to_csv(index=False)
-    st.download_button(
-        label="Download Chat History",
-        data=csv,
-        file_name="fortune500_chat_history.csv",
-        mime="text/csv"
-    )
+def check_files_available():
+    """Check if files are available for querying."""
+    if "document_processor" in st.session_state and st.session_state.document_processor:
+        loader = st.session_state.document_processor["loader"]
+        files = loader.get_file_list()
+        return len(files) > 0
+    return False
 
 def main():
-    """Main Streamlit application."""
-    # Page configuration
-    st.set_page_config(
-        page_title=STREAMLIT_TITLE,
-        page_icon="📊",
-        layout="wide"
-    )
-    
-    # Initialize session state
-    init_session_state()
-    
-    # Page header
-    st.title(STREAMLIT_TITLE)
-    st.write(STREAMLIT_DESCRIPTION)
-    
-    # Create sidebar
+    # Create a sidebar for document upload and management
     with st.sidebar:
-        st.header("Document Management")
+        st.title("Upload Documents")
+        st.write("Upload Fortune 500 Annual Reports")
         
         # File uploader
         uploaded_files = st.file_uploader(
-            "Upload Fortune 500 Annual Reports",
+            "Drag and drop files here",
             accept_multiple_files=True,
-            type=["pdf", "docx", "pptx", "png", "jpg", "jpeg"]
+            type=["pdf", "docx", "pptx", "png", "jpg", "jpeg"],
+            label_visibility="collapsed"
         )
         
         # Process uploaded files
         if uploaded_files:
-            # Initialize components if not already done
+            # Initialize components
             initialize_components()
             
             # Process each file
             for uploaded_file in uploaded_files:
                 process_uploaded_file(uploaded_file)
-        
-        # Display processing status
+                
+        # Show processing status if any
         if st.session_state.processing_status:
             st.info(st.session_state.processing_status)
         
-        # Separator
+        # Chat options
         st.divider()
-        
-        # Display available files
-        st.subheader("Available Documents")
-        
-        if "document_processor" in st.session_state and st.session_state.document_processor:
-            loader = st.session_state.document_processor["loader"]
-            files = loader.get_file_list()
-            
-            if files:
-                for file in files:
-                    st.write(f"📄 {file['name']}")
-            else:
-                st.write("No documents uploaded yet.")
-                
-        # Database stats
-        if "vector_store" in st.session_state and st.session_state.vector_store:
-            st.divider()
-            st.subheader("Vector Database Stats")
-            stats = st.session_state.vector_store.get_stats()
-            st.write(f"Documents indexed: {stats['document_count']}")
-        
-        # Clear chat button
-        st.divider()
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("Clear Chat"):
-                clear_chat_history()
-        with col2:
-            if st.button("Export Chat"):
-                export_chat_history()
+        if st.button("Clear Conversation"):
+            clear_chat()
     
-    # Main content area
-    col1, col2 = st.columns([3, 1])
+    # Main chat interface
+    st.title("Fortune 500 RAG Chatbot")
     
-    # Metadata filters
-    with col2:
-        st.subheader("Filters")
-        company_filter = None
-        year_filter = None
-        
-        if "document_processor" in st.session_state and st.session_state.document_processor:
-            filters = get_available_metadata_filters()
-            
-            if filters["companies"]:
-                company_filter = st.selectbox(
-                    "Company",
-                    ["All"] + filters["companies"]
-                )
-                if company_filter == "All":
-                    company_filter = None
-            
-            if filters["years"]:
-                year_filter = st.selectbox(
-                    "Year",
-                    ["All"] + filters["years"]
-                )
-                if year_filter == "All":
-                    year_filter = None
+    # Display chat messages
+    for idx, message in enumerate(st.session_state.chat_history):
+        if message["role"] == "user":
+            with st.chat_message("user"):
+                st.write(message["content"])
+        else:
+            with st.chat_message("assistant"):
+                st.write(message["content"])
     
-    # Chat interface
-    with col1:
-        st.subheader("Ask Questions About Fortune 500 Annual Reports")
-        
-        # Display chat history
-        chat_container = st.container()
-        with chat_container:
-            for message in st.session_state.chat_history:
-                if message["role"] == "user":
-                    st.chat_message("user").write(message["content"])
-                else:
-                    with st.chat_message("assistant"):
-                        st.write(message["content"])
-                        
-                        # Display sources if available
-                        if "sources" in message and message["sources"]:
-                            with st.expander("Sources"):
-                                for i, source in enumerate(message["sources"]):
-                                    st.write(f"Source {i+1}:")
-                                    for key, value in source.items():
-                                        st.write(f"- {key}: {value}")
-        
-        # Question input
-        user_question = st.chat_input("Ask a question about Fortune 500 annual reports")
-        if user_question:
-            # Initialize components if not already done
+    # Chat input
+    files_available = check_files_available()
+    
+    # Query input
+    placeholder = "Ask a question about Fortune 500 annual reports..."
+    user_input = st.chat_input(placeholder, disabled=not files_available)
+    
+    if not files_available:
+        st.info("📤 Please upload documents to start asking questions")
+    
+    if user_input:
+        # Initialize components if needed
+        if not st.session_state.vector_store:
             initialize_components()
             
-            # Process the question
-            ask_question(user_question, company_filter, year_filter)
-        
-        # Initial instruction if no chat history
-        if not st.session_state.chat_history:
-            st.info("Upload Fortune 500 annual reports and ask questions about them. The AI will retrieve relevant information and provide answers based on the documents.")
+        # Process the question
+        ask_question(user_input)
+        st.rerun()
 
 if __name__ == "__main__":
     main()

@@ -4,14 +4,14 @@ A Retrieval-Augmented Generation (RAG) chatbot built with Python that answers qu
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [System Architecture](#system-architecture)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Components](#components)
-- [Evaluation](#evaluation)
-- [Future Improvements](#future-improvements)
+- Overview]
+- System Architecture
+- Features
+- Installation
+- Usage
+- Components
+- Evaluation
+- Future Improvements
 
 ## Overview
 
@@ -32,26 +32,26 @@ This RAG chatbot system combines document processing, vector embeddings, and lar
 
 ### Component Breakdown
 
-1. **Document Processor**
+1. Document Processor
    - Handles ingestion of PDF, DOCX, PPTX, and image files
    - Extracts text using specialized extractors for each file type
    - Implements OCR for image-based documents
    - Chunks text appropriately for vector embedding
    - Extracts and applies metadata (company, year, document type)
 
-2. **Vector Database**
+2. Vector Database
    - Generates embeddings using OpenAI's embedding model
    - Stores vector embeddings in Chroma DB
    - Manages indexing for efficient retrieval
    - Implements similarity search functionality
 
-3. **LLM Integration**
+3. LLM Integration
    - Constructs effective prompts using retrieved context
    - Integrates with OpenAI GPT-4o API
    - Implements fallback strategies for ambiguous queries
    - Formats and refines LLM responses
 
-4. **User Interface**
+4. User Interface
    - Provides document upload capabilities for multiple file types
    - Implements chat interface for question input and response display
    - Offers metadata filtering options
@@ -71,15 +71,15 @@ This RAG chatbot system combines document processing, vector embeddings, and lar
 
 ## Features
 
-- **Multi-format Document Processing**: Handles PDF, DOCX, PPTX, and images
-- **OCR Integration**: Extracts text from images and scanned documents
-- **Intelligent Chunking**: Splits documents into semantically meaningful chunks
-- **Metadata Tagging**: Associates company name, year, and document type with chunks
-- **Vector Similarity Search**: Retrieves the most relevant content for each query
-- **Contextual Response Generation**: Uses GPT-4o to produce accurate, helpful answers
-- **Source Attribution**: Cites the specific document sources used in responses
-- **Intuitive User Interface**: Clean Streamlit interface for document upload and interaction
-- **Metadata Filtering**: Allows users to filter queries by company or year
+- Multi-format Document Processing: Handles PDF, DOCX, PPTX, and images
+- OCR Integration: Extracts text from images and scanned documents
+- Intelligent Chunking: Splits documents into semantically meaningful chunks
+- Metadata Tagging: Associates company name, year, and document type with chunks
+- Vector Similarity Search: Retrieves the most relevant content for each query
+- Contextual Response Generation: Uses GPT-4o to produce accurate, helpful answers
+- Source Attribution: Cites the specific document sources used in responses
+- Intuitive User Interface: Clean Streamlit interface for document upload and interaction
+- Metadata Filtering: Allows users to filter queries by company or year
 
 ## Installation
 
@@ -108,9 +108,9 @@ This RAG chatbot system combines document processing, vector embeddings, and lar
    ```
 
 4. Install Tesseract OCR (for image processing):
-   - **Ubuntu/Debian**: `sudo apt-get install tesseract-ocr`
-   - **macOS**: `brew install tesseract`
-   - **Windows**: Download and install from [GitHub](https://github.com/UB-Mannheim/tesseract/wiki)
+   - Ubuntu/Debian: `sudo apt-get install tesseract-ocr`
+   - macOS: `brew install tesseract`
+   - Windows: Download and install from [GitHub](https://github.com/UB-Mannheim/tesseract/wiki)
 
 5. Create a `.env` file with your API keys:
    ```
@@ -154,10 +154,10 @@ The application will be available at `http://localhost:8501`.
 
 The document processor handles multiple file formats:
 
-- **PDF**: Using PyPDF2 for text extraction
-- **DOCX**: Using python-docx for structured document parsing
-- **PPTX**: Using python-pptx for presentation content extraction
-- **Images**: Using Tesseract OCR via pytesseract
+- PDF: Using PyPDF2 for text extraction
+- DOCX: Using python-docx for structured document parsing
+- PPTX: Using python-pptx for presentation content extraction
+- Images: Using Tesseract OCR via pytesseract
 
 Text is chunked using a paragraph-based strategy with overlap to maintain context across chunk boundaries.
 
@@ -165,19 +165,19 @@ Text is chunked using a paragraph-based strategy with overlap to maintain contex
 
 The system uses:
 
-- **Embeddings**: OpenAI's text-embedding model
-- **Vector Database**: Chroma DB for storing and retrieving embeddings
-- **Similarity Metric**: Cosine similarity for matching queries to content
+- Embeddings: OpenAI's text-embedding model
+- Vector Database: Chroma DB for storing and retrieving embeddings
+- Similarity Metric: Cosine similarity for matching queries to content
 
 ### LLM Integration
 
-- **Model**: OpenAI GPT-4o
-- **Prompt Engineering**: Carefully designed prompts that include:
+- Model: OpenAI GPT-4o
+- Prompt Engineering: Carefully designed prompts that include:
   - Task description
   - Retrieved context
   - Query
   - Response format instructions
-- **Fallback Strategy**: Graceful handling of queries without relevant context
+- Fallback Strategy: Graceful handling of queries without relevant context
 
 ### User Interface
 
@@ -237,15 +237,15 @@ The system has been designed with the following evaluation criteria in mind:
 
 Potential enhancements for future versions:
 
-1. **Advanced Metadata Extraction**: Automatic company and date recognition
-2. **Multi-Model Support**: Option to switch between different LLMs
-3. **Conversation Memory**: Support for follow-up questions and conversation history
-4. **Advanced OCR**: Improved image and table processing
-5. **Performance Optimization**: Caching and parallel processing for faster document ingestion
-6. **Citation Enhancement**: Direct linking to document sections in responses
-7. **User Authentication**: Secure access controls for sensitive documents
-8. **Export Functionality**: Options to export chat histories and response reports
-9. **Multilingual Support**: Process and respond to questions in multiple languages
+1. Advanced Metadata Extraction: Automatic company and date recognition
+2. Multi-Model Support: Option to switch between different LLMs
+3. Conversation Memory: Support for follow-up questions and conversation history
+4. Advanced OCR: Improved image and table processing
+5. Performance Optimization: Caching and parallel processing for faster document ingestion
+6. Citation Enhancement: Direct linking to document sections in responses
+7. User Authentication: Secure access controls for sensitive documents
+8. Export Functionality: Options to export chat histories and response reports
+9. Multilingual Support: Process and respond to questions in multiple languages
 
 ## License
 

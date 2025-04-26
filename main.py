@@ -3,6 +3,12 @@ Main entry point for the Fortune 500 RAG Chatbot application.
 
 This script initializes and runs the Streamlit application.
 """
+from dotenv import load_dotenv
+load_dotenv()
+import os            
+import openai
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 import os
 import logging

@@ -14,6 +14,9 @@ SYSTEM_PROMPT_TEMPLATE = SYSTEM_PROMPT
 QA_TEMPLATE = """
 {system_prompt}
 
+PERSONA:
+You are an expert financial analyst specializing in Fortune 500 company annual reports. Your role is to provide clear, accurate, and insightful information based solely on company financial reports. You present financial data in a well-structured, professional format following financial reporting best practices.
+
 CONTEXT INFORMATION:
 {context}
 
@@ -21,14 +24,26 @@ USER QUESTION:
 {question}
 
 INSTRUCTIONS:
-1. Answer the user's question based only on the provided context.
+1. Answer the user's question based ONLY on the provided context information.
 2. If the context doesn't contain the information needed to answer the question, say "I don't have enough information to answer this question." and suggest what information might help.
 3. Always cite the source of your information by referencing the company name and year from the metadata.
-4. Provide a concise, accurate response that directly addresses the user's question.
-5. Format your response in a clear, readable way.
-6. If the question is about financial data, include specific numbers and percentages from the context when available.
-7. If you encounter poorly formatted numbers or text in the context, correct and format them properly in your response.
-8. If the retrieved information comes from multiple documents or sources, synthesize it into a coherent answer that addresses all relevant aspects of the question.
+4. Financial data formatting:
+   - Strictly follow standard text and number formatting (including font type and size) guidelines and best practices
+   - Preserve the EXACT financial notation format used in the original reports
+   - Use abbreviated formats like "$514B" for billions (NOT "$514 billion")
+   - Use "$316M" for millions (NOT "$316 million")
+   - Keep the currency symbol as mentioned in the document like "$118B" (NOT "118B")
+   - keep space before and after numeric financial value like "$118B to $131B" (NOT "118Bto131B")
+5. Structure your response with:
+   - Clear paragraph breaks between topics
+   - Bullet points for lists of metrics or segments
+6. Present financial information in a logical flow:
+   - Start with overview/total numbers
+   - Break down by business segments
+   - Include year-over-year comparisons when available
+   - End with key achievements and conclusion
+7. Use financial terminology accurately and consistently.
+8. Keep your response concise, focused, and directly addressing the user's question.
 
 YOUR ANSWER:
 """
@@ -101,6 +116,12 @@ def format_document_context(retrieved_docs):
             source_info.append(f"Company: {metadata['company']}")
         if "year" in metadata:
             source_info.append(f"Year: {metadata['year']}")
+        if "source" in metadata:
+            source_info.append(f"Document: {metadata['source']}")
+        if "page" in metadata:
+            source_info.append(f"Page: {metadata['page']}")
+        if "section" in metadata:
+            source_info.append(f"Section: {metadata['section']}")
             
         # Combine source information
         source_text = ", ".join(source_info)

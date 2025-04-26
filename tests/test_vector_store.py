@@ -210,7 +210,7 @@ class TestVectorStore:
         query_args = self.mock_collection.query.call_args[1]
         
         assert len(query_args["query_embeddings"]) == 1
-        assert query_args["n_results"] == 5  # Default value
+        assert query_args["n_results"] == 15  # Default value
         
         # Check results
         assert len(results) == 2

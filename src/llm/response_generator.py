@@ -6,6 +6,7 @@ based on retrieved context and user queries.
 """
 
 import logging
+import re
 from typing import Dict, List, Optional, Any
 
 from langchain_openai import ChatOpenAI
@@ -81,7 +82,9 @@ class ResponseGenerator:
             logger.info(f"Raw LLM response received: {response}")
             logger.info(f"Response content type: {type(response.content)}")
             logger.info(f"Response content: {response.content[:100]}...")  # Log first 100 chars
-            response_text = response.content
+            
+            # Standardize financial notation in response
+            response_text = self._standardize_financial_notation(response.content)
             
             # Create the result object
             result = {
@@ -102,6 +105,58 @@ class ResponseGenerator:
                 "error": str(e),
                 "query": query
             }
+    
+    def _standardize_financial_notation(self, text: str) -> str:
+        """
+        Standardize financial notation to ensure consistent formatting.
+        
+        Args:
+            text: The text containing financial information
+            
+        Returns:
+            str: Text with standardized financial notation
+        """
+        # Fix billions notation
+        # Convert "X billion" to "$XB"
+        text = re.sub(r'(\$?\s*\d+(?:\.\d+)?)\s*billion', r'$\1B', text, flags=re.IGNORECASE)
+        # Ensure dollar sign for "XB"
+        text = re.sub(r'(\d+)B\b', r'$\1B', text)
+        
+        # Fix millions notation
+        # Convert "X million" to "$XM"
+        text = re.sub(r'(\$?\s*\d+(?:\.\d+)?)\s*million', r'$\1M', text, flags=re.IGNORECASE)
+        # Ensure dollar sign for "XM"
+        text = re.sub(r'(\d+)M\b', r'$\1M', text)
+        
+        # Fix ranges formatting
+        # Ensure proper spacing and formatting in ranges like "$XB to $YB"
+        text = re.sub(r'(\$\d+[BM])\s+to\s+(\$?\d+[BM])', r'\1 to \2', text)
+        # Add dollar sign to second part of range if missing
+        text = re.sub(r'(\$\d+[BM])\s+to\s+(\d+[BM])', r'\1 to $\2', text)
+        
+        # Fix year-over-year notation
+        text = re.sub(r'([Yy]ear[-\s]over[-\s][Yy]ear)\s*\(\s*"?YoY"?\s*\)', r'\1 (YoY)', text)
+        
+        # Fix percentage formatting
+        text = re.sub(r'(\d+)\s*%', r'\1%', text)
+        
+        # Fix spacing around dollar signs
+        text = re.sub(r'\$\s+(\d+)', r'$\1', text)
+        
+        # Fix combined notation issues (e.g., "514billionin2022")
+        text = re.sub(r'(\d+)billion(?:in|to)(\d+)', r'$\1B in \2', text)
+        text = re.sub(r'(\d+)million(?:in|to)(\d+)', r'$\1M in \2', text)
+        
+        # Fix formatting errors with asterisks and italics
+        text = re.sub(r'(\d+)\*B\*', r'$\1B', text)
+        text = re.sub(r'(\d+)\*M\*', r'$\1M', text)
+        text = re.sub(r'\*billion\*', r'billion', text)
+        text = re.sub(r'\*million\*', r'million', text)
+        
+        # Fix specific formatting issues with "to" in ranges
+        text = re.sub(r'to\*', r'to ', text)
+        
+        return text
     
     def generate_response_from_langchain_docs(self, query: str, 
                                              docs: List[Document],
@@ -164,7 +219,9 @@ class ResponseGenerator:
             
             # Generate fallback response
             response = self.llm.invoke(prompt)
-            response_text = response.content
+            
+            # Standardize financial notation in fallback response
+            response_text = self._standardize_financial_notation(response.content)
             
             # Create the result object
             result = {

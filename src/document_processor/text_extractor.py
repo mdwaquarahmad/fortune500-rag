@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Union
 
-import PyPDF2
+import pypdf
 from docx import Document as DocxDocument
 from pptx import Presentation
 
@@ -79,7 +79,7 @@ class TextExtractor:
         
         try:
             with open(file_path, 'rb') as file:
-                pdf_reader = PyPDF2.PdfReader(file)
+                pdf_reader = pypdf.PdfReader(file)
                 total_pages = len(pdf_reader.pages)
                 
                 for page_num, page in enumerate(pdf_reader.pages):

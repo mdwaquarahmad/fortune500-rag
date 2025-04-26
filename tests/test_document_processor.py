@@ -1,198 +1,112 @@
 """
-Helper utilities for the Fortune 500 RAG Chatbot.
+Tests for the document processor module.
 
-This module provides common utility functions used across the application.
+This module contains tests for the document loader, text extractor, and chunker.
 """
 
 import os
-import re
-import logging
-from typing import Dict, List, Optional, Any
+import pytest
 from pathlib import Path
-import json
-import time
+import tempfile
+import shutil
+from unittest.mock import patch, MagicMock
 
-logger = logging.getLogger(__name__)
+from src.document_processor.loader import DocumentLoader
+from src.document_processor.text_extractor import TextExtractor
+from src.document_processor.chunker import TextChunker
+from src.config import SUPPORTED_FILE_TYPES
 
-def setup_logger(log_level=logging.INFO):
-    """
-    Set up and configure logging.
+class TestDocumentLoader:
+    """Tests for the DocumentLoader class."""
     
-    Args:
-        log_level: Logging level (default: INFO)
-    """
-    logging.basicConfig(
-        level=log_level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
-
-def extract_company_from_filename(filename: str) -> Optional[str]:
-    """
-    Extract company name from filename using pattern matching.
-    
-    Args:
-        filename: Name of the file
+    def setup_method(self):
+        """Set up the test environment."""
+        # Create a temporary directory for uploads
+        self.temp_dir = tempfile.mkdtemp()
         
-    Returns:
-        Optional[str]: Extracted company name or None
-    """
-    # Remove file extension
-    base_name = os.path.splitext(filename)[0]
+        # Create a loader with the temporary directory
+        self.loader = DocumentLoader()
+        self.loader.upload_dir = Path(self.temp_dir)
     
-    # Try different patterns
+    def teardown_method(self):
+        """Clean up after tests."""
+        # Remove the temporary directory
+        shutil.rmtree(self.temp_dir)
     
-    # Pattern 1: CompanyName_Year
-    match = re.match(r'^([A-Za-z0-9\s]+)_(\d{4}).*$', base_name)
-    if match:
-        return match.group(1).replace('_', ' ').strip()
-    
-    # Pattern 2: CompanyName-Year
-    match = re.match(r'^([A-Za-z0-9\s]+)-(\d{4}).*$', base_name)
-    if match:
-        return match.group(1).replace('-', ' ').strip()
-    
-    # Pattern 3: AnnualReport_CompanyName_Year
-    match = re.match(r'^AnnualReport[_-]([A-Za-z0-9\s]+)[_-](\d{4}).*$', base_name)
-    if match:
-        return match.group(1).replace('_', ' ').strip()
-    
-    # No match found
-    return None
-
-def extract_year_from_filename(filename: str) -> Optional[str]:
-    """
-    Extract year from filename using pattern matching.
-    
-    Args:
-        filename: Name of the file
+    def test_validate_file_type(self):
+        """Test validation of file types."""
+        # Test valid file types
+        for file_type, extensions in SUPPORTED_FILE_TYPES.items():
+            for ext in extensions:
+                filename = f"test{ext}"
+                is_valid, detected_type = self.loader.validate_file_type(filename)
+                assert is_valid is True
+                assert detected_type == file_type
         
-    Returns:
-        Optional[str]: Extracted year or None
-    """
-    # Look for 4-digit year pattern
-    match = re.search(r'(\d{4})', filename)
-    if match:
-        return match.group(1)
+        # Test invalid file type
+        is_valid, _ = self.loader.validate_file_type("test.xyz")
+        assert is_valid is False
     
-    return None
-
-def sanitize_text(text: str) -> str:
-    """
-    Clean and sanitize text for better processing.
-    
-    Args:
-        text: Input text string
+    def test_extract_metadata(self):
+        """Test metadata extraction from filenames."""
+        # Test company and year
+        metadata = self.loader.extract_metadata("Amazon_2023.pdf")
+        assert metadata["company"] == "Amazon"
+        assert metadata["year"] == "2023"
         
-    Returns:
-        str: Cleaned text
-    """
-    if not text:
-        return ""
-    
-    # Replace multiple whitespace with single space
-    text = re.sub(r'\s+', ' ', text)
-    
-    # Remove non-printable characters
-    text = re.sub(r'[^\x20-\x7E\n\r\t]', '', text)
-    
-    # Normalize line breaks
-    text = re.sub(r'[\r\n]+', '\n', text)
-    
-    return text.strip()
-
-def format_metadata_for_display(metadata: Dict) -> str:
-    """
-    Format metadata dictionary into a readable string.
-    
-    Args:
-        metadata: Metadata dictionary
+        # Test company with spaces
+        metadata = self.loader.extract_metadata("Microsoft-Corporation_2022.docx")
+        assert metadata["company"] == "Microsoft Corporation"
+        assert metadata["year"] == "2022"
         
-    Returns:
-        str: Formatted metadata string
-    """
-    if not metadata:
-        return "No metadata available"
-    
-    formatted_parts = []
-    
-    # Order keys for consistent display
-    important_keys = ["company", "year", "source", "page", "section"]
-    
-    # Add important keys first if they exist
-    for key in important_keys:
-        if key in metadata:
-            formatted_parts.append(f"{key.capitalize()}: {metadata[key]}")
-    
-    # Add any remaining keys
-    for key, value in metadata.items():
-        if key not in important_keys:
-            formatted_parts.append(f"{key.capitalize()}: {value}")
-    
-    return " | ".join(formatted_parts)
+        # Test source is included
+        metadata = self.loader.extract_metadata("Apple_2023.pdf")
+        assert metadata["source"] == "Apple_2023.pdf"
 
-def chunk_list(items: List[Any], chunk_size: int) -> List[List[Any]]:
-    """
-    Split a list into chunks of specified size.
+class TestTextChunker:
+    """Tests for the TextChunker class."""
     
-    Args:
-        items: List to chunk
-        chunk_size: Size of each chunk
+    def setup_method(self):
+        """Set up the test environment."""
+        self.chunker = TextChunker(chunk_size=100, chunk_overlap=20)
+    
+    def test_chunk_text(self):
+        """Test text chunking functionality."""
+        # Create a long text
+        text = "This is a test. " * 20  # 300 characters
         
-    Returns:
-        List[List[Any]]: List of chunks
-    """
-    return [items[i:i + chunk_size] for i in range(0, len(items), chunk_size)]
-
-def measure_processing_time(func):
-    """
-    Decorator to measure and log function execution time.
-    
-    Args:
-        func: Function to measure
+        # Chunk the text
+        chunks = self.chunker._chunk_text(text)
         
-    Returns:
-        Function wrapper
-    """
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        logger.info(f"Function {func.__name__} took {end_time - start_time:.4f} seconds to execute")
-        return result
-    return wrapper
-
-def save_json(data: Any, file_path: str):
-    """
-    Save data to a JSON file.
-    
-    Args:
-        data: Data to save
-        file_path: Path to save the file
-    """
-    try:
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2)
-        logger.info(f"Saved data to {file_path}")
-    except Exception as e:
-        logger.error(f"Error saving JSON data: {e}")
-        raise
-
-def load_json(file_path: str) -> Any:
-    """
-    Load data from a JSON file.
-    
-    Args:
-        file_path: Path to the JSON file
+        # Should split into chunks
+        assert len(chunks) > 1
         
-    Returns:
-        Any: Loaded data
-    """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        logger.info(f"Loaded data from {file_path}")
-        return data
-    except Exception as e:
-        logger.error(f"Error loading JSON data: {e}")
-        raise
+        # Each chunk should be less than or equal to chunk_size
+        for chunk in chunks:
+            assert len(chunk) <= 100
+    
+    def test_chunk_documents(self):
+        """Test document chunking functionality."""
+        # Create test documents
+        text_blocks = [
+            {
+                "text": "This is a test. " * 20,
+                "metadata": {"source": "doc1.pdf", "page": 1}
+            },
+            {
+                "text": "Another test document. " * 15,
+                "metadata": {"source": "doc2.pdf", "page": 1}
+            }
+        ]
+        
+        # Chunk the documents
+        chunked_blocks = self.chunker.chunk_documents(text_blocks)
+        
+        # Should have created multiple chunks
+        assert len(chunked_blocks) > 2
+        
+        # Metadata should be preserved and enhanced
+        for block in chunked_blocks:
+            assert "source" in block["metadata"]
+            assert "chunk" in block["metadata"]
+            assert "total_chunks" in block["metadata"]

@@ -21,8 +21,8 @@ The system follows a modular architecture with several distinct components that 
 ```
 +------------------+    +-----------------+    +----------------+    +----------------+
 |                  |    |                 |    |                |    |                |
-|  Document        |    |  Vector         |    |  LLM           |    |  User         |
-|  Processor       |--->|  Store          |--->|  Integration   |--->|  Interface    |
+|  Document        |    |  Vector         |    |  LLM           |    |  User          |
+|  Processor       |--->|  Store          |--->|  Integration   |--->|  Interface     |
 |                  |    |                 |    |                |    |                |
 +------------------+    +-----------------+    +----------------+    +----------------+
         |                       |                     |                     |
@@ -39,29 +39,29 @@ The system follows a modular architecture with several distinct components that 
 
 ### 2.2 Data Flow
 
-1. **Document Ingestion**:
+1. Document Ingestion:
    - User uploads documents through the UI
    - System saves documents to storage
    - Documents are loaded and validated
 
-2. **Text Extraction and Processing**:
+2. Text Extraction and Processing:
    - Text is extracted from various document formats
    - OCR is applied to images if needed
    - Text is cleaned and preprocessed
    - Text is divided into semantic chunks
 
-3. **Embedding and Indexing**:
+3. Embedding and Indexing:
    - Text chunks are converted to vector embeddings
    - Embeddings are stored in the vector database
    - Metadata (company, year, etc.) is associated with each chunk
 
-4. **Query Processing**:
+4. Query Processing:
    - User enters a question
    - Question is converted to a vector embedding
    - Similar document chunks are retrieved based on embedding similarity
    - Metadata filters are applied if specified
 
-5. **Response Generation**:
+5. Response Generation:
    - Retrieved context is formatted
    - Prompt is constructed with context and question
    - LLM generates a response based on the prompt
@@ -135,31 +135,31 @@ The system follows a modular architecture with several distinct components that 
 
 ### 4.1 Core Technologies
 
-- **Python 3.9+**: Primary programming language
-- **LangChain**: Framework for RAG pipeline
-- **OpenAI API**: For embeddings and LLM capabilities
-- **Chroma DB**: Vector database for storing embeddings
-- **Streamlit**: Web interface framework
+- Python 3.9+: Primary programming language
+- LangChain: Framework for RAG pipeline
+- OpenAI API: For embeddings and LLM capabilities
+- Chroma DB: Vector database for storing embeddings
+- Streamlit: Web interface framework
 
 ### 4.2 Document Processing
 
-- **PyPDF2**: PDF text extraction
-- **python-docx**: DOCX document parsing
-- **python-pptx**: PowerPoint presentation parsing
-- **Tesseract OCR**: Image-to-text conversion
-- **Pillow**: Image processing
+- PyPDF2: PDF text extraction
+- python-docx: DOCX document parsing
+- python-pptx: PowerPoint presentation parsing
+- Tesseract OCR: Image-to-text conversion
+- Pillow: Image processing
 
 ### 4.3 Storage and Retrieval
 
-- **Chroma DB**: Persistent vector database
-- **OpenAI Embeddings**: Text embedding model
-- **LangChain Retrievers**: Similarity search and retrieval
+- Chroma DB: Persistent vector database
+- OpenAI Embeddings: Text embedding model
+- LangChain Retrievers: Similarity search and retrieval
 
 ### 4.4 Development and Testing
 
-- **pytest**: Testing framework
-- **python-dotenv**: Environment configuration
-- **tqdm**: Progress indication
+- pytest: Testing framework
+- python-dotenv: Environment configuration
+- tqdm: Progress indication
 
 ## 5. Design Decisions
 
@@ -167,10 +167,10 @@ The system follows a modular architecture with several distinct components that 
 
 We chose a paragraph-based chunking strategy with overlap to balance several factors:
 
-1. **Semantic Coherence**: Paragraphs generally contain complete thoughts
-2. **Context Preservation**: Overlap ensures context spans chunks
-3. **Vector Quality**: Paragraphs provide enough context for meaningful embeddings
-4. **Retrieval Efficiency**: Paragraph-sized chunks allow for precise retrieval
+1. Semantic Coherence: Paragraphs generally contain complete thoughts
+2. Context Preservation: Overlap ensures context spans chunks
+3. Vector Quality: Paragraphs provide enough context for meaningful embeddings
+4. Retrieval Efficiency: Paragraph-sized chunks allow for precise retrieval
 
 The chunker implements a multi-level approach:
 - First attempts to split by paragraphs
@@ -181,30 +181,30 @@ The chunker implements a multi-level approach:
 
 Chroma DB was selected for the following reasons:
 
-1. **Ease of Integration**: Well-supported by LangChain
-2. **Persistence**: Supports disk-based storage
-3. **Metadata Filtering**: Strong support for metadata queries
-4. **Performance**: Good balance of speed and accuracy
-5. **Simplicity**: No need for external databases or services
+1. Ease of Integration: Well-supported by LangChain
+2. Persistence: Supports disk-based storage
+3. Metadata Filtering: Strong support for metadata queries
+4. Performance: Good balance of speed and accuracy
+5. Simplicity: No need for external databases or services
 
 ### 5.3 LLM Selection
 
 OpenAI's GPT-4o was selected for response generation:
 
-1. **Quality**: State-of-the-art reasoning and language capabilities
-2. **Context Length**: Supports longer context windows
-3. **API Stability**: Well-documented, reliable API
-4. **Cost-Effectiveness**: Good balance of quality and cost
+1. Quality: State-of-the-art reasoning and language capabilities
+2. Context Length: Supports longer context windows
+3. API Stability: Well-documented, reliable API
+4. Cost-Effectiveness: Good balance of quality and cost
 
 ### 5.4 User Interface
 
 Streamlit was chosen for the user interface:
 
-1. **Rapid Development**: Fast implementation of interactive elements
-2. **Python Integration**: Seamless integration with backend code
-3. **File Handling**: Built-in support for file uploads
-4. **Responsive Design**: Adapts to different screen sizes
-5. **Rich Components**: Built-in support for chat interfaces
+1. Rapid Development: Fast implementation of interactive elements
+2. Python Integration: Seamless integration with backend code
+3. File Handling: Built-in support for file uploads
+4. Responsive Design: Adapts to different screen sizes
+5. Rich Components: Built-in support for chat interfaces
 
 ## 6. Performance Considerations
 

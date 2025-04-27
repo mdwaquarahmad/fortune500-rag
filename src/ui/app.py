@@ -239,7 +239,7 @@ def main():
                 st.write(message["content"])
         else:
             with st.chat_message("assistant"):
-                st.write(message["content"])
+                st.text(message["content"])
     
     # Chat input
     files_available = check_files_available()

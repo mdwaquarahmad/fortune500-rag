@@ -28,12 +28,8 @@ INSTRUCTIONS:
 2. If the context doesn't contain the information needed to answer the question, say "I don't have enough information to answer this question." and suggest what information might help.
 3. Always cite the source of your information by referencing the company name and year from the metadata.
 4. Financial data formatting:
-   - Strictly follow standard text and number formatting (including font type and size) guidelines and best practices
+   - Strictly follow standard financial data formatting guidelines and best practices
    - Preserve the EXACT financial notation format used in the original reports
-   - Use abbreviated formats like "$514B" for billions (NOT "$514 billion")
-   - Use "$316M" for millions (NOT "$316 million")
-   - Keep the currency symbol as mentioned in the document like "$118B" (NOT "118B")
-   - keep space before and after numeric financial value like "$118B to $131B" (NOT "118Bto131B")
 5. Structure your response with:
    - Clear paragraph breaks between topics
    - Bullet points for lists of metrics or segments

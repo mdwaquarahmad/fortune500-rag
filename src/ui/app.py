@@ -10,6 +10,7 @@ import logging
 import streamlit as st
 from pathlib import Path
 import time
+import re
 from datetime import datetime
 import pandas as pd
 
@@ -48,6 +49,49 @@ if "processing_status" not in st.session_state:
     st.session_state.processing_status = None
 if "files_uploaded" not in st.session_state:
     st.session_state.files_uploaded = False
+
+def clean_financial_notation(text):
+    """
+    Clean financial notation for display in Streamlit.
+    Handles multiple dollar signs, commas in dollar amounts, and other formatting issues.
+    
+    Args:
+        text: Text to clean
+        
+    Returns:
+        str: Cleaned text
+    """
+    if not text:
+        return ""
+    
+    # Fix patterns like $$$514B (multiple dollar signs)
+    text = re.sub(r'\${2,}(\d+)', r'$\1', text)
+    
+    # Fix patterns like $$12.$2B (dollar signs with decimal)
+    text = re.sub(r'\${1,}(\d+)\.\${1,}(\d+)', r'$\1.\2', text)
+    
+    # Fix comma issues in dollar amounts like $201,$183M
+    text = re.sub(r'\$(\d+),\$(\d+)([KMB]?)', r'$\1,\2\3', text)
+    
+    # Fix dollar signs around commas in numbers
+    text = re.sub(r'(\d+)\$,\$(\d+)', r'\1,\2', text)
+    
+    # Fix specific pattern like $X,$XXXM
+    text = re.sub(r'\$(\d+),\$(\d+)([KMB]?)', r'$\1,\2\3', text)
+    
+    # Fix "over$ $7B" type patterns
+    text = re.sub(r'(over|than|about|approximately)\$\s+\$(\d+)([KMB]?)', r'\1 $\2\3', text)
+    
+    # Fix "word$ $number" patterns generally
+    text = re.sub(r'(\w+)\$\s+\$(\d+)', r'\1 $\2', text)
+    
+    # Any remaining multiple dollar signs
+    text = re.sub(r'\${2,}', r'$', text)
+    
+    # Escape all remaining dollar signs for Streamlit markdown
+    text = text.replace('$', r'\$')
+    
+    return text
 
 def initialize_components():
     """Initialize all RAG components."""
@@ -239,7 +283,9 @@ def main():
                 st.write(message["content"])
         else:
             with st.chat_message("assistant"):
-                st.write(message["content"].replace("$", "\$"))
+                # Clean financial notation before displaying
+                cleaned_content = clean_financial_notation(message["content"])
+                st.markdown(cleaned_content)
     
     # Chat input
     files_available = check_files_available()

@@ -1,0 +1,177 @@
+{
+  "question": "What was Amazon's operating income in 2023?",
+  "expected_answer": "Amazon's operating income in 2023 was $36.9 billion (operating margin of 6.4%), which represents a 201% increase from $12.2 billion (operating margin of 2.4%) in 2022.",
+  "actual_response": "Amazon's operating income in 2023 was $$36.$9B, reflecting a significant improvement of 201% year-over-year from $$12.$2B in 2022. This increase also resulted in an improvement in the operating margin from 2.4% in 2022 to 6.4% in 2023.\n\n- **Overview:**\n  - 2023 Operating Income: $$36.$9B\n  - 2022 Operating Income: $$12.$2B\n  - Year-over-Year Growth: 201%\n\n- **Operating Margin:**\n  - 2023: 6.4%\n  - 2022: 2.4%\n\nThis substantial growth in operating income highlights Amazon's improved financial performance over the year.\n\n[SOURCE: Amazon com Inc 2023 Annual Report]",
+  "latency": {
+    "retrieval_seconds": 0.46919679641723633,
+    "generation_seconds": 2.6495227813720703,
+    "total_seconds": 3.1187195777893066
+  },
+  "fact_coverage": {
+    "coverage_percentage": 80.0,
+    "covered_facts": 4,
+    "total_facts": 5,
+    "fact_details": [
+      {
+        "fact": "Operating income was $36.9 billion in 2023",
+        "covered": true,
+        "overlap_score": 1.0
+      },
+      {
+        "fact": "Operating margin was 6.4% in 2023",
+        "covered": true,
+        "overlap_score": 1.0
+      },
+      {
+        "fact": "Operating income increased by 201% year-over-year",
+        "covered": false,
+        "overlap_score": 0.6666666666666666
+      },
+      {
+        "fact": "Previous year (2022) operating income was $12.2 billion",
+        "covered": true,
+        "overlap_score": 0.8571428571428571
+      },
+      {
+        "fact": "Previous year operating margin was 2.4%",
+        "covered": true,
+        "overlap_score": 0.8333333333333334
+      }
+    ]
+  },
+  "sources": [
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "section": "body",
+      "total_chunks": 1,
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "paragraph": 14
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "section": "body",
+      "chunk": 1,
+      "total_chunks": 1,
+      "paragraph": 14
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "paragraph": 14,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "total_chunks": 1,
+      "section": "body",
+      "chunk": 1
+    },
+    {
+      "paragraph": 14,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "section": "body",
+      "total_chunks": 1,
+      "chunk": 1
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1,
+      "total_chunks": 1,
+      "paragraph": 14,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "section": "body"
+    },
+    {
+      "paragraph": 14,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "chunk": 1,
+      "section": "body"
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "paragraph": 14,
+      "total_chunks": 1,
+      "section": "body",
+      "chunk": 1
+    },
+    {
+      "total_chunks": 1,
+      "chunk": 1,
+      "paragraph": 14,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "section": "body"
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "paragraph": 14,
+      "total_chunks": 1,
+      "chunk": 1,
+      "section": "body"
+    },
+    {
+      "total_chunks": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "paragraph": 428,
+      "section": "body",
+      "chunk": 1
+    },
+    {
+      "total_chunks": 1,
+      "section": "body",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1,
+      "paragraph": 428
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "section": "body",
+      "total_chunks": 1,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "paragraph": 428
+    },
+    {
+      "section": "body",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "paragraph": 428,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 1
+    },
+    {
+      "paragraph": 428,
+      "section": "body",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "total_chunks": 1,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "total_chunks": 1,
+      "section": "body",
+      "paragraph": 428,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1
+    }
+  ],
+  "category": "financial_metrics",
+  "timestamp": "2025-04-28T13:22:31.422945",
+  "llm_evaluation": {
+    "factual_accuracy_score": 9,
+    "completeness_score": 9,
+    "relevance_score": 10,
+    "overall_score": 9.33,
+    "factual_errors": [
+      "Typographical errors in the figures: '$36.$9B' should be '$36.9B' and '$12.$2B' should be '$12.2B'"
+    ],
+    "missing_information": [],
+    "explanation": "The actual answer is factually accurate except for typographical errors in the figures. It includes all key information from the expected answer and directly addresses the question, making it highly relevant."
+  }
+}

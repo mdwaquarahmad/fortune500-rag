@@ -1,23 +1,28 @@
 # Fortune 500 RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot built with Python that answers questions based on Fortune 500 company annual reports. The system processes multiple document formats, including PDF, DOCX, PPTX, and images (via OCR), to provide accurate and contextual responses using OpenAI's GPT-4o.
+A Retrieval-Augmented Generation (RAG) chatbot built with Python that answers user questions based on the content of multiple Fortune 500 company annual reports. The system processes various document formats (PDF, DOCX, PPTX, and images via OCR) to provide accurate and contextual responses using OpenAI's GPT-4o.
 
 ## Table of Contents
 
-- Overview]
+- Overview
 - System Architecture
 - Features
 - Installation
 - Usage
 - Components
-- Evaluation
+- Evaluation Strategy
+- Project Structure
+- Technical Decisions
+- Challenges and Solutions
 - Future Improvements
+- License
+- Acknowledgments
 
 ## Overview
 
 This RAG chatbot system combines document processing, vector embeddings, and large language model capabilities to create an intelligent document-based question answering system. The chatbot:
 
-1. Ingests and processes documents in multiple formats
+1. Ingests and processes documents in multiple formats (PDF, DOCX, PPTX, images)
 2. Extracts, chunks, and vectorizes text content
 3. Stores vector embeddings with metadata in a vector database
 4. Retrieves relevant content when questions are asked
@@ -80,6 +85,7 @@ This RAG chatbot system combines document processing, vector embeddings, and lar
 - Source Attribution: Cites the specific document sources used in responses
 - Intuitive User Interface: Clean Streamlit interface for document upload and interaction
 - Metadata Filtering: Allows users to filter queries by company or year
+- Comprehensive Evaluation System: Built-in tools to measure accuracy, completeness, and latency
 
 ## Installation
 
@@ -87,6 +93,7 @@ This RAG chatbot system combines document processing, vector embeddings, and lar
 
 - Python 3.9+
 - OpenAI API key
+- Tesseract OCR (for image processing)
 
 ### Setup
 
@@ -114,133 +121,242 @@ This RAG chatbot system combines document processing, vector embeddings, and lar
 
 5. Create a `.env` file with your API keys:
    ```
-   OPENAI_API_KEY=your_openai_api_key
+   OPENAI_API_KEY=openai_api_key
+   ```
+
+6. Create necessary directories:
+   ```bash
+   mkdir -p uploads chroma_db
    ```
 
 ## Usage
 
 ### Starting the Application
 
-Run the Streamlit application:
-```bash
-streamlit run src/ui/app.py
-```
+You can start the application using either of these methods:
+
+1. Run using the main script:
+   ```bash
+   python main.py
+   ```
+
+2. Or run directly with Streamlit:
+   ```bash
+   streamlit run src/ui/app.py
+   ```
 
 The application will be available at `http://localhost:8501`.
 
 ### Uploading Documents
 
-1. Use the file upload section to add documents (PDF, DOCX, PPTX, or images)
-2. The system will process the documents and display progress
-3. Once processed, documents will be available for querying
+1. Use the file upload section in the sidebar to add documents (PDF, DOCX, PPTX, or images)
+2. Drag and drop files or click "Browse files" to select from your file system
+3. The system will process the documents and display progress in the sidebar
+4. Once processed, documents will be available for querying
+5. Uploaded documents are listed in the sidebar for reference
 
 ### Asking Questions
 
-1. Type your question in the input field
-2. Optionally, use metadata filters to narrow the search scope
-3. Submit your question and view the generated response
-4. The response will include citations to the source documents
+1. Type your question in the chat input field at the bottom of the main panel
+2. Press Enter or click the send button to submit your question
+3. The system will:
+   - Search for relevant information in your documents
+   - Generate a response based on the retrieved content
+   - Display the answer with proper formatting for financial data
+   - Include citations to the source documents
 
 ### Example Queries
 
-- "What were Amazon's total revenue and net income in 2023?"
-- "How does Microsoft describe its cloud strategy in recent reports?"
-- "Compare the R&D investments of Apple and Google in the last fiscal year."
-- "What are the major risks mentioned in Tesla's annual report?"
+- "What was Amazon's total revenue in 2023?"
+- "How did Amazon's North America segment perform in 2023?"
+- "What was Amazon's operating income in 2023?"
+- "How did AWS perform in 2023?"
+- "How did the International segment perform in 2023?"
+- "What were the key achievements for Amazon in 2023?"
+- "What is Amazon's strategy for AWS going forward?"
+
+### Using the Evaluation System
+
+The application includes a comprehensive evaluation system to measure performance:
+
+1. Run a basic evaluation:
+   ```bash
+   python evaluation/run_evaluation.py
+   ```
+
+2. Generate a detailed evaluation report:
+   ```bash
+   python evaluation/run_evaluation.py --report
+   ```
+
+3. Evaluate specific questions:
+   ```bash
+   python evaluation/run_evaluation.py --single-question 0 --report
+   ```
+
+4. View evaluation results in the `evaluation/results` directory
 
 ## Components
 
 ### Document Processor
 
-The document processor handles multiple file formats:
+The document processor handles multiple file formats using specialized libraries:
 
-- PDF: Using PyPDF2 for text extraction
-- DOCX: Using python-docx for structured document parsing
-- PPTX: Using python-pptx for presentation content extraction
-- Images: Using Tesseract OCR via pytesseract
+- PDF: Uses PyPDF2 for text extraction, with fallback to OCR for scanned documents
+- DOCX: Uses python-docx for structured document parsing, preserving paragraph and table structure
+- PPTX: Uses python-pptx for presentation content extraction
+- Images: Uses Tesseract OCR via pytesseract with preprocessing for optimal text recognition
 
-Text is chunked using a paragraph-based strategy with overlap to maintain context across chunk boundaries.
+Text chunking strategies:
+- Primary approach: Paragraph-based chunking with overlap
+- Fallback approaches: Sentence-level chunking or character-level chunking when needed
+- Configurable chunk size and overlap via environment variables
 
 ### Vector Store
 
-The system uses:
+The vector database implementation:
 
-- Embeddings: OpenAI's text-embedding model
-- Vector Database: Chroma DB for storing and retrieving embeddings
-- Similarity Metric: Cosine similarity for matching queries to content
+- Embedding Model: OpenAI's text-embedding-3-small for efficient, high-quality embeddings
+- Vector Database: Chroma DB for persistent storage and efficient retrieval
+- Similarity Metric: Cosine similarity for semantic matching
+- Retrieval Strategy: Returns top k most relevant chunks, with configurable k parameter
+- Metadata Filtering: Support for filtering by company, year, and document type
 
 ### LLM Integration
 
-- Model: OpenAI GPT-4o
-- Prompt Engineering: Carefully designed prompts that include:
-  - Task description
-  - Retrieved context
-  - Query
-  - Response format instructions
-- Fallback Strategy: Graceful handling of queries without relevant context
+LLM implementation details:
+
+- Model: OpenAI GPT-4o for high-quality, contextual responses
+- Prompt Engineering: Carefully designed prompts with:
+  - System-level instructions for response format and style
+  - Persona definition as a financial analyst
+  - Retrieved context with source attribution
+  - Query with any special instructions
+- Context Management: Optimized for GPT-4o's context window
+- Financial Data Formatting: Special handling for consistent financial notation
 
 ### User Interface
 
-Built with Streamlit, the UI provides:
+The Streamlit UI provides:
 
-- File upload with drag-and-drop support
-- Chat-style interface for questions and answers
-- Document processing status indicators
-- Metadata filter controls
-- Source attribution display
+- Sidebar: For document management and upload
+- Main Panel: For chat history and question answering
+- File Upload: Drag-and-drop or browser-based file selection
+- Chat Interface: Natural conversational interface for questions
+- Processing Indicators: Status messages and progress information
+- Error Handling: User-friendly error messages
 
-## Evaluation
+## Evaluation Strategy
 
-The system has been designed with the following evaluation criteria in mind:
+The system includes a comprehensive evaluation framework (in the `evaluation/` directory) that measures:
 
-### Code Quality
-- Clean, modular architecture with separation of concerns
-- Consistent code style and comprehensive documentation
-- Error handling and edge case management
+1. Latency: Timing for document retrieval and response generation
+2. Accuracy: How well responses match expected answers from ground truth
+3. Completeness: Coverage of key facts in generated responses
 
-### RAG Architecture
-- Effective document chunking strategy
-- Optimized embedding generation
-- Accurate retrieval flow with relevance ranking
+The evaluation system features:
+- LLM-based evaluation: Using GPT-4o to assess response quality
+- Visualization tools: For latency and quality metrics
+- Detailed reports: Markdown reports with comprehensive analysis
+- Customizable test sets: Support for custom test questions
 
-### Use of LLM
-- Well-engineered prompts with appropriate context injection
-- Fallback handling for queries without relevant context
-- Response formatting for readability
+Run evaluations with:
+```bash
+python evaluation/run_evaluation.py --report
+```
 
-### End-to-End Functionality
-- Seamless document ingestion and processing
-- Fast and accurate question answering
-- Intuitive user experience
+## Project Structure
 
-### Error Handling
-- Graceful handling of malformed documents
-- Support for empty queries and edge cases
-- Clear error messaging for users
+```
+fortune500-rag/
+├── docs/
+│   ├── images/
+│   │   └── architecture_diagram.png
+│   └── hld.md
+├── evaluation/
+│   ├── results/
+│   ├── custom_test_questions.json
+│   ├── evaluator.py
+│   ├── metrics.py
+│   ├── run_evaluation.py
+│   └── test_data.py
+├── src/
+│   ├── document_processor/
+│   │   ├── chunker.py
+│   │   ├── loader.py
+│   │   ├── ocr.py
+│   │   └── text_extractor.py
+│   ├── llm/
+│   │   ├── prompt_templates.py
+│   │   └── response_generator.py
+│   ├── ui/
+│   │   └── app.py
+│   ├── utils/
+│   │   └── helpers.py
+│   ├── vector_store/
+│   │   ├── embeddings.py
+│   │   └── store.py
+│   └── config.py
+├── tests/
+│   ├── test_document_processor.py
+│   ├── test_llm.py
+│   └── test_vector_store.py
+├── uploads/
+├── chroma_db/
+├── .env.example
+├── .gitignore
+├── main.py
+├── README.md
+└── requirements.txt
+```
 
-### Tech Stack
-- Appropriate use of LangChain, Chroma, and OpenAI
-- Integration of specialized libraries for document processing
-- Efficient code with minimal dependencies
+## Technical Decisions
 
-### Interface
-- Clean, intuitive Streamlit UI
-- Responsive design with progress indicators
-- Support for various question types
+### Language and Framework Choices
 
-### Testing
-- Unit tests for core components
-- Integration tests for end-to-end functionality
-- Example query test suite
+- Python: Chosen for its rich ecosystem of libraries for NLP and document processing
+- LangChain: Provides effective abstractions for RAG pipeline components
+- Streamlit: Enables rapid UI development with Python, ideal for this application
+- Chroma DB: Lightweight vector database with good performance and no external dependencies
+
+### Embedding and LLM Selection
+
+- OpenAI Embeddings: Selected for high-quality semantic search capabilities
+- GPT-4o: Chosen for its superior reasoning capabilities and understanding of financial data
+
+### Document Processing Strategy
+
+- Chunking Strategy: Paragraph-based chunking balances context preservation with retrieval precision
+- OCR Integration: Adds support for scanned documents and images, enhancing versatility
+
+### Prompt Engineering Decisions
+
+- Financial Focus: Prompts designed specifically for financial document analysis
+- Source Attribution: Explicit instructions to cite sources enhance transparency
+- Financial Notation Standardization: Consistent formatting of monetary values
+
+## Challenges and Solutions
+
+### Challenge 1: Handling Multiple Document Formats
+Solution: Implemented modular document processors with specialized extractors for each format
+
+### Challenge 2: Financial Data Formatting
+Solution: Created custom prompt engineering and post-processing to ensure consistent notation
+
+### Challenge 3: OCR Quality
+Solution: Implemented preprocessing steps for images and fallback strategies for low-quality scans
+
+### Challenge 4: Response Quality Evaluation
+Solution: Developed a comprehensive evaluation framework with LLM-based assessment
 
 ## Future Improvements
 
 Potential enhancements for future versions:
 
-1. Advanced Metadata Extraction: Automatic company and date recognition
-2. Multi-Model Support: Option to switch between different LLMs
+1. Advanced Metadata Extraction: Automatic company and date recognition using NER
+2. Multi-Model Support: Option to switch between different LLMs (Claude, Llama, etc.)
 3. Conversation Memory: Support for follow-up questions and conversation history
-4. Advanced OCR: Improved image and table processing
+4. Advanced OCR: Improved image and table processing with layout analysis
 5. Performance Optimization: Caching and parallel processing for faster document ingestion
 6. Citation Enhancement: Direct linking to document sections in responses
 7. User Authentication: Secure access controls for sensitive documents
@@ -256,3 +372,5 @@ MIT
 - This project uses OpenAI's GPT-4o for text generation
 - Built with LangChain for RAG pipeline orchestration
 - Utilizes Chroma DB for vector storage
+- Uses Streamlit for the user interface and matplotlib for visualization
+- Thanks to the maintainers of pypdf, python-docx, python-pptx, and pytesseract

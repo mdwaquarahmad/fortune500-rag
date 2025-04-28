@@ -1,0 +1,177 @@
+{
+  "question": "How did AWS perform in 2023?",
+  "expected_answer": "AWS revenue rose by 13% year-over-year, from $80 billion to $91 billion in 2023. The growth was primarily driven by increased customer usage, although it was partially offset by pricing changes due to long-term customer contracts.",
+  "actual_response": "AWS experienced a sales increase of 13% in 2023 compared to the previous year. This growth was primarily driven by increased customer usage. However, the sales growth was partially offset by pricing changes, which were mainly influenced by long-term customer contracts.\n\n**Key Points:**\n- **Sales Growth:** 13% increase in 2023 compared to the prior year.\n- **Drivers of Growth:** \n  - Increased customer usage.\n  - Pricing changes due to long-term customer contracts.\n\nThis information is sourced from the Amazon.com Inc 2023 Annual Report (Amazon-com-Inc-2023-Annual-Report.pdf, Page: 37).",
+  "latency": {
+    "retrieval_seconds": 0.5097479820251465,
+    "generation_seconds": 2.389374017715454,
+    "total_seconds": 2.8991219997406006
+  },
+  "fact_coverage": {
+    "coverage_percentage": 40.0,
+    "covered_facts": 2,
+    "total_facts": 5,
+    "fact_details": [
+      {
+        "fact": "AWS revenue was $91 billion in 2023",
+        "covered": false,
+        "overlap_score": 0.6666666666666666
+      },
+      {
+        "fact": "AWS revenue grew by 13% year-over-year",
+        "covered": false,
+        "overlap_score": 0.5
+      },
+      {
+        "fact": "Previous year (2022) AWS revenue was $80 billion",
+        "covered": false,
+        "overlap_score": 0.5714285714285714
+      },
+      {
+        "fact": "Growth was driven by increased customer usage",
+        "covered": true,
+        "overlap_score": 1.0
+      },
+      {
+        "fact": "Growth was partially offset by pricing changes due to long-term contracts",
+        "covered": true,
+        "overlap_score": 1.0
+      }
+    ]
+  },
+  "sources": [
+    {
+      "page": 37,
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 5,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "chunk": 1
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_chunks": 5,
+      "page": 37,
+      "total_pages": 92
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "page": 37,
+      "total_pages": 92,
+      "total_chunks": 5,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "page": 37,
+      "total_chunks": 5,
+      "total_pages": 92
+    },
+    {
+      "page": 37,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_pages": 92,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "chunk": 1,
+      "total_chunks": 5
+    },
+    {
+      "total_chunks": 5,
+      "total_pages": 92,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 37,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 5,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_pages": 92,
+      "page": 37
+    },
+    {
+      "page": 37,
+      "total_chunks": 5,
+      "total_pages": 92,
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_chunks": 5,
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 37
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1,
+      "page": 37,
+      "total_chunks": 5
+    },
+    {
+      "total_chunks": 5,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 1,
+      "total_pages": 92,
+      "page": 37
+    },
+    {
+      "paragraph": 416,
+      "total_chunks": 1,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "section": "body",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx"
+    },
+    {
+      "section": "body",
+      "total_chunks": 1,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "paragraph": 416
+    },
+    {
+      "total_chunks": 1,
+      "section": "body",
+      "paragraph": 416,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx"
+    },
+    {
+      "chunk": 1,
+      "paragraph": 416,
+      "total_chunks": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "section": "body",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx"
+    }
+  ],
+  "category": "segment_performance",
+  "timestamp": "2025-04-28T13:22:37.374148",
+  "llm_evaluation": {
+    "factual_accuracy_score": 10,
+    "completeness_score": 8,
+    "relevance_score": 10,
+    "overall_score": 9.33,
+    "factual_errors": [],
+    "missing_information": [
+      "Exact revenue figures: from $80 billion to $91 billion"
+    ],
+    "explanation": "The actual answer is factually accurate as it correctly states the 13% sales growth and the factors driving it. However, it lacks the specific revenue figures mentioned in the expected answer, which affects completeness. The answer is highly relevant as it directly addresses the question about AWS's performance in 2023."
+  }
+}

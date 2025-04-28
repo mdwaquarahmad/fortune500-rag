@@ -11,6 +11,7 @@ This document outlines the high-level design of the Fortune 500 RAG Chatbot syst
 - Store and retrieve relevant information efficiently
 - Generate accurate answers using the OpenAI GPT-4o model
 - Provide a user-friendly interface for document uploading and querying
+- Evaluate system performance, accuracy, and reliability
 
 ## 2. System Architecture
 
@@ -35,6 +36,23 @@ The system follows a modular architecture with several distinct components that 
 |  - Add metadata  |    |  - Retrieve     |    |  - Format      |    |    responses   |
 |                  |    |    similar docs |    |    output      |    |                |
 +------------------+    +-----------------+    +----------------+    +----------------+
+                                                                            |
+                                                                            v
+                                                                     +----------------+
+                                                                     |                |
+                                                                     |  Evaluation    |
+                                                                     |  System        |
+                                                                     |                |
+                                                                     +----------------+
+                                                                     |  - Measure     |
+                                                                     |    latency     |
+                                                                     |  - Assess      |
+                                                                     |    accuracy    |
+                                                                     |  - Evaluate    |
+                                                                     |    completeness|
+                                                                     |  - Visualize   |
+                                                                     |    performance |
+                                                                     +----------------+
 ```
 
 ### 2.2 Data Flow
@@ -66,6 +84,12 @@ The system follows a modular architecture with several distinct components that 
    - Prompt is constructed with context and question
    - LLM generates a response based on the prompt
    - Response is displayed to the user with source citations
+
+6. System Evaluation:
+   - Performance metrics are collected during operation
+   - Test questions are evaluated against ground truth
+   - LLM-based evaluations assess response quality
+   - Visualizations and reports are generated
 
 ## 3. Component Design
 
@@ -131,6 +155,26 @@ The system follows a modular architecture with several distinct components that 
 - Offers metadata filtering options
 - Shows processing status and progress indicators
 
+### 3.5 Evaluation System
+
+#### 3.5.1 Metrics Collection
+- Measures latency for retrieval and generation
+- Tracks accuracy against ground truth
+- Evaluates completeness of responses
+- Calculates overall performance metrics
+
+#### 3.5.2 LLM-Based Evaluation
+- Uses OpenAI's GPT-4o to evaluate response quality
+- Assesses factual accuracy of responses
+- Evaluates completeness of information
+- Determines relevance to the original question
+
+#### 3.5.3 Reporting and Visualization
+- Generates comprehensive evaluation reports
+- Creates visualizations of performance metrics
+- Provides insights for system improvement
+- Tracks performance changes over time
+
 ## 4. Technology Stack
 
 ### 4.1 Core Technologies
@@ -160,6 +204,13 @@ The system follows a modular architecture with several distinct components that 
 - pytest: Testing framework
 - python-dotenv: Environment configuration
 - tqdm: Progress indication
+
+### 4.5 Evaluation and Visualization
+
+- Matplotlib: Data visualization
+- Pandas: Data analysis and manipulation
+- OpenAI GPT-4o: LLM-based evaluation
+- Custom metrics: Latency and accuracy calculations
 
 ## 5. Design Decisions
 
@@ -206,6 +257,15 @@ Streamlit was chosen for the user interface:
 4. Responsive Design: Adapts to different screen sizes
 5. Rich Components: Built-in support for chat interfaces
 
+### 5.5 Evaluation Approach
+
+Our evaluation system was designed based on these considerations:
+
+1. Comprehensive Metrics: Measuring both technical performance (latency) and output quality
+2. LLM-Based Evaluation: Using GPT-4o to assess quality aspects that are difficult to quantify programmatically
+3. Visualization: Providing visual representations of system performance
+4. Integration: Reusing the same components as the main application to ensure evaluation accuracy
+
 ## 6. Performance Considerations
 
 ### 6.1 Embedding Generation
@@ -225,6 +285,12 @@ Streamlit was chosen for the user interface:
 - Optimizing prompt design for context utilization
 - Managing LLM parameters (temperature, max tokens)
 - Implementing caching for repeated queries
+
+### 6.4 Evaluation Performance
+
+- Selective use of LLM-based evaluation to manage API costs
+- Efficient handling of financial notation in responses
+- Optimized visualization generation for large result sets
 
 ## 7. Scalability
 
@@ -258,6 +324,13 @@ The current design can be scaled in several ways:
 - Embedding model fine-tuning
 - Query optimization
 
+### 8.3 Evaluation Enhancements
+
+- Automated benchmark testing 
+- Comparative evaluation across different LLM models
+- User feedback integration into evaluation metrics
+- Real-time performance monitoring dashboard
+
 ## 9. Conclusion
 
-This high-level design provides a blueprint for a robust RAG chatbot system capable of processing, indexing, and retrieving information from Fortune 500 annual reports in various formats. The modular architecture allows for easy extension and maintenance, while the chosen technology stack provides a balance of functionality, performance, and development speed.
+This high-level design provides a blueprint for a robust RAG chatbot system capable of processing, indexing, and retrieving information from Fortune 500 annual reports in various formats. The modular architecture allows for easy extension and maintenance, while the chosen technology stack provides a balance of functionality, performance, and development speed. The integrated evaluation system ensures ongoing quality assessment and continuous improvement of the system's capabilities.

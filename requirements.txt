@@ -22,6 +22,9 @@ streamlit-chat>=0.1.1
 pytest>=7.4.0
 pytest-cov>=4.1.0
 
+# Evaluation requirements
+matplotlib>=3.5.0
+
 # Utilities
 tqdm>=4.66.1
 numpy>=1.26.0

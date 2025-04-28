@@ -1,0 +1,165 @@
+{
+  "question": "How did Amazon's International segment perform in 2023?",
+  "expected_answer": "Amazon's International segment revenue grew by 11% year-over-year, increasing from $118 billion to $131 billion in 2023.",
+  "actual_response": "In 2023, Amazon's International segment demonstrated strong performance with notable growth:\n\n- **International Revenue**: The revenue for the International segment increased by 11% year-over-year (YoY), rising from $$$118B to $$$131B.\n\nThis growth in the International segment contributed to Amazon's overall revenue increase, reflecting the company's successful expansion and operations outside of North America.\n\n**Source**: Amazon com Inc 2023 Annual Report, Document: Amazon-com-Inc-2023-Annual-Report.pdf, Page: 2.",
+  "latency": {
+    "retrieval_seconds": 0.7171430587768555,
+    "generation_seconds": 2.3765690326690674,
+    "total_seconds": 3.093712091445923
+  },
+  "fact_coverage": {
+    "coverage_percentage": 66.66666666666666,
+    "covered_facts": 2,
+    "total_facts": 3,
+    "fact_details": [
+      {
+        "fact": "International revenue was $131 billion in 2023",
+        "covered": true,
+        "overlap_score": 0.8333333333333334
+      },
+      {
+        "fact": "International revenue grew by 11% year-over-year",
+        "covered": true,
+        "overlap_score": 0.8333333333333334
+      },
+      {
+        "fact": "Previous year (2022) International revenue was $118 billion",
+        "covered": false,
+        "overlap_score": 0.42857142857142855
+      }
+    ]
+  },
+  "sources": [
+    {
+      "chunk": 2,
+      "total_chunks": 10,
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_pages": 92
+    },
+    {
+      "total_pages": 92,
+      "total_chunks": 10,
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "chunk": 2,
+      "page": 2,
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 10,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "total_chunks": 10,
+      "total_pages": 92,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2
+    },
+    {
+      "total_pages": 92,
+      "page": 2,
+      "total_chunks": 10,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "chunk": 2
+    },
+    {
+      "chunk": 2,
+      "total_pages": 92,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "page": 2,
+      "total_chunks": 10,
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_chunks": 10,
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "total_pages": 92
+    },
+    {
+      "page": 2,
+      "total_pages": 92,
+      "chunk": 2,
+      "total_chunks": 10,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "total_chunks": 10,
+      "total_pages": 92,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "total_chunks": 10,
+      "total_pages": 92,
+      "chunk": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_pages": 92,
+      "total_chunks": 10,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "chunk": 2,
+      "page": 2
+    },
+    {
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "paragraph": 13,
+      "section": "body",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 1
+    },
+    {
+      "paragraph": 13,
+      "total_chunks": 1,
+      "chunk": 1,
+      "section": "body",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "chunk": 1,
+      "total_chunks": 1,
+      "paragraph": 13,
+      "section": "body"
+    },
+    {
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "section": "body",
+      "total_chunks": 1,
+      "paragraph": 13,
+      "company": "Amazon com Inc 2023 Annual Report"
+    }
+  ],
+  "category": "segment_performance",
+  "timestamp": "2025-04-28T13:22:43.008336",
+  "llm_evaluation": {
+    "factual_accuracy_score": 10,
+    "completeness_score": 10,
+    "relevance_score": 10,
+    "overall_score": 10.0,
+    "factual_errors": [],
+    "missing_information": [],
+    "explanation": "The actual answer is factually accurate, as it correctly states the 11% revenue growth and the increase from $118 billion to $131 billion, matching the expected answer. It is complete, including all key information from the expected answer, and it is highly relevant, directly addressing the question about Amazon's International segment performance in 2023."
+  }
+}

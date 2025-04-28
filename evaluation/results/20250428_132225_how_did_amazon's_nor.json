@@ -1,0 +1,165 @@
+{
+  "question": "How did Amazon's North America segment perform in 2023?",
+  "expected_answer": "Amazon's North America segment revenue grew by 12% year-over-year, increasing from $316 billion to $353 billion in 2023.",
+  "actual_response": "In 2023, Amazon's North America segment demonstrated strong performance. Here are the key financial highlights:\n\n- **Revenue Growth**: The North America segment's revenue increased by 12% year-over-year (YoY), rising from $$$316B to $$$353B.\n\n- **Overall Performance**: This growth in the North America segment contributed significantly to Amazon's total revenue increase, which grew by 12% YoY from $$$514B to $$$575B.\n\nThese figures indicate a robust performance in the North America segment, reflecting Amazon's continued expansion and market presence in this region.\n\n**Source**: Amazon com Inc 2023 Annual Report, Document: Amazon-com-Inc-2023-Annual-Report.pdf, Page: 2.",
+  "latency": {
+    "retrieval_seconds": 0.6011521816253662,
+    "generation_seconds": 2.652812957763672,
+    "total_seconds": 3.253965139389038
+  },
+  "fact_coverage": {
+    "coverage_percentage": 66.66666666666666,
+    "covered_facts": 2,
+    "total_facts": 3,
+    "fact_details": [
+      {
+        "fact": "North America revenue was $353 billion in 2023",
+        "covered": true,
+        "overlap_score": 0.8571428571428571
+      },
+      {
+        "fact": "North America revenue grew by 12% year-over-year",
+        "covered": true,
+        "overlap_score": 1.0
+      },
+      {
+        "fact": "Previous year revenue for North America was $316 billion",
+        "covered": false,
+        "overlap_score": 0.5
+      }
+    ]
+  },
+  "sources": [
+    {
+      "total_pages": 92,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "total_chunks": 10
+    },
+    {
+      "total_chunks": 10,
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "total_pages": 92,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "total_pages": 92,
+      "chunk": 2,
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_chunks": 10
+    },
+    {
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "chunk": 2,
+      "total_chunks": 10,
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "chunk": 2,
+      "total_pages": 92,
+      "total_chunks": 10,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "chunk": 2,
+      "total_chunks": 10,
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "company": "Amazon com Inc 2023 Annual Report",
+      "total_pages": 92
+    },
+    {
+      "total_chunks": 10,
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "page": 2,
+      "total_pages": 92
+    },
+    {
+      "total_pages": 92,
+      "chunk": 2,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_chunks": 10
+    },
+    {
+      "chunk": 2,
+      "total_chunks": 10,
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "page": 2,
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf"
+    },
+    {
+      "chunk": 2,
+      "total_chunks": 10,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "total_pages": 92,
+      "page": 2
+    },
+    {
+      "total_pages": 92,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.pdf",
+      "page": 2,
+      "total_chunks": 10,
+      "chunk": 2
+    },
+    {
+      "paragraph": 13,
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "section": "body",
+      "total_chunks": 1
+    },
+    {
+      "chunk": 1,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "section": "body",
+      "total_chunks": 1,
+      "paragraph": 13,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx"
+    },
+    {
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "total_chunks": 1,
+      "chunk": 1,
+      "paragraph": 13,
+      "section": "body",
+      "company": "Amazon com Inc 2023 Annual Report"
+    },
+    {
+      "chunk": 1,
+      "source": "Amazon-com-Inc-2023-Annual-Report.docx",
+      "paragraph": 13,
+      "company": "Amazon com Inc 2023 Annual Report",
+      "section": "body",
+      "total_chunks": 1
+    }
+  ],
+  "category": "segment_performance",
+  "timestamp": "2025-04-28T13:22:25.878805",
+  "llm_evaluation": {
+    "factual_accuracy_score": 10,
+    "completeness_score": 10,
+    "relevance_score": 9,
+    "overall_score": 9.67,
+    "factual_errors": [],
+    "missing_information": [],
+    "explanation": "The actual answer accurately reports the revenue growth of Amazon's North America segment, matching the expected answer in terms of percentage growth and revenue figures. It also provides additional context about the overall performance of Amazon, which is relevant but slightly beyond the scope of the specific question about the North America segment. Therefore, the relevance score is slightly lower, but the factual accuracy and completeness are perfect."
+  }
+}

@@ -38,9 +38,9 @@ flowchart TD
     %% User Interface Component
     subgraph UI["User Interface (Streamlit)"]
         style UI fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        A1["Document Upload\n(Step 1)"]
-        A2["User Question Input\n(Step 2)"]
-        A3["Response Display\n(Step 3)"]
+        A1["Document Upload (Step 1)"]
+        A2["User Question Input (Step 2)"]
+        A3["Response Display (Step 3)"]
     end
     
     %% Document Processor Component

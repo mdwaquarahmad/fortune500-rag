@@ -38,9 +38,9 @@ flowchart TD
     %% User Interface Component
     subgraph UI["User Interface (Streamlit)"]
         style UI fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        A1["Document Upload"] --> A2["Filter Selection"] 
-        A2 --> A3["Question Input"]
-        A3 --> A4["Response Display"]
+        A1["Document Upload\n(Step 1)"]
+        A2["User Question Input\n(Step 2)"]
+        A3["Response Display\n(Step 3)"]
     end
     
     %% Document Processor Component
@@ -74,19 +74,18 @@ flowchart TD
         E2 --> E3["Reporting & Visualization"]
     end
     
-    %% Main Data Flow Connections
+    %% Main Data Flow Connections - Solid Lines
     A1 -- "Documents" --> B1
     B4 -- "Chunks" --> C1
     B5 -- "Metadata" --> C2
-    A3 -- "Query" --> C3
-    A2 -- "Filter criteria" --> C3
+    A2 -- "Query" --> C3
     C3 -- "Retrieved contexts" --> D1
-    D3 -- "Generated response" --> A4
+    D3 -- "Generated response" --> A3
     
-    %% Evaluation System Connections
-    C3 -. "Retrieval metrics" .-> E1
-    D3 -. "Response metrics" .-> E1
-    A3 -. "Query data" .-> E1
+    %% Evaluation System Connections - Dotted Lines (no arrows)
+    DP -.- EVAL
+    VS -.- EVAL
+    LLM -.- EVAL
     
     %% Styling for specific components
     classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
@@ -96,7 +95,7 @@ flowchart TD
     classDef evalComponents fill:#d576c3,stroke:#333,stroke-width:2px,color:white,font-weight:bold
     
     %% Apply styles to components
-    class A1,A2,A3,A4 uiComponents
+    class A1,A2,A3 uiComponents
     class B1,B2,B3,B4,B5 dpComponents
     class C1,C2,C3 vsComponents
     class D1,D2,D3 llmComponents
@@ -104,7 +103,7 @@ flowchart TD
     
     %% Link styling
     linkStyle default stroke:#666,stroke-width:2px
-    linkStyle 11,12,13 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 6,7,8 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

@@ -128,14 +128,14 @@ flowchart TD
    - Formats and refines LLM responses
 
 4. **User Interface**
-   - Provides document upload capabilities for multiple file types
+   - Provides document upload capabilities for multiple file types (PDF, DOCX, PPTX, and image files)
    - Implements chat interface for question input and response display
    - Offers metadata filtering options
    - Displays processing status and progress indicators
 
 5. **Evaluation System**
    - Measures latency for retrieval and response generation
-   - Evaluates response quality using LLM-based assessment
+   - Evaluates response quality using LLM-based assessment (accuracy, completeness, and relevance)
    - Generates visualizations and detailed reports
    - Tracks system performance over time
 
@@ -163,18 +163,19 @@ flowchart TD
 - **Source Attribution**: Cites the specific document sources used in responses
 - **Intuitive User Interface**: Clean Streamlit interface for document upload and interaction
 - **Metadata Filtering**: Allows users to filter queries by company or year
-- **Comprehensive Evaluation System**: Built-in tools to measure accuracy, completeness, and latency
-- **Error Handling**: Gracefully handles edge cases (empty docs, missing input, etc.)
+- **Comprehensive Evaluation System**: Built-in tools to measure accuracy, completeness, relevance, and latency
+- **Error Handling**: Handles edge cases (empty docs, missing input, etc.)
 - **Financial Data Formatting**: Specialized handling of financial notation and figures
 
 ## Project Structure
 
 ```
 fortune500-rag/
-├── docs/
-│   ├── images/
-│   │   └── architecture_diagram.png
-│   └── hld.md
+├── docs/              # sample documents for testing
+│   ├── pdf/
+│   ├── docx/
+│   ├── pptx/
+│   └── images/
 ├── evaluation/
 │   ├── results/
 │   │   ├── visualizations/
@@ -214,18 +215,18 @@ fortune500-rag/
 │   └── test_vector_store.py
 ├── uploads/           # Document storage directory
 ├── chroma_db/         # Vector database storage
-├── .env.example
+├── .env
 ├── .gitignore
 ├── main.py            # Main entry point
 ├── README.md
 └── requirements.txt
 ```
 
-The project follows a modular structure with clear separation of concerns:
+The project follows a modular structure with clear separation of concerns, security, privacy and governance:
 - `src/` contains the core application code organized by component
 - `tests/` includes unit tests for each major component
 - `evaluation/` houses the evaluation system and results
-- `docs/` contains additional documentation
+- `docs/` contains sample PDF, DOCX, PPTX, and Images for testing
 - `uploads/` and `chroma_db/` are data directories created at runtime
 
 ## Setup and Installation
@@ -240,7 +241,7 @@ The project follows a modular structure with clear separation of concerns:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/fortune500-rag.git
+   git clone https://github.com/mdwaquarahmad/fortune500-rag.git
    cd fortune500-rag
    ```
 
@@ -297,12 +298,9 @@ The application will be available at `http://localhost:8501`.
 
 ### Example Queries
 
-- "What was Amazon's total revenue in 2023?"
 - "How did Amazon's North America segment perform in 2023?"
-- "What was Amazon's operating income in 2023?"
 - "How did AWS perform in 2023?"
-- "How did the International segment perform in 2023?"
-- "What is Amazon's strategy for AWS going forward?"
+- "How did Amazon's International segment perform in 2023?"
 
 ## Testing
 
@@ -338,7 +336,7 @@ Each test file contains multiple test cases that verify both expected functional
 
 ## Evaluation System
 
-The evaluation system measures the performance, accuracy, and completeness of the RAG chatbot. It provides quantitative metrics and visualizations to assess the quality of responses.
+The evaluation system measures the latency, accuracy, relevance, and completeness of the RAG chatbot. It provides quantitative metrics and visualizations to assess the quality of responses.
 
 ### Evaluation Metrics
 
@@ -348,9 +346,7 @@ The system measures:
    - Document retrieval from the vector database
    - Response generation by the LLM
 
-2. **Fact Coverage**: Percentage of expected facts included in the generated response
-
-3. **LLM-Based Evaluation**: Using GPT-4o to assess:
+2. **LLM-Based Evaluation**: Using GPT-4o to assess:
    - Factual Accuracy (0-10): Correctness of information
    - Completeness (0-10): Coverage of key information
    - Relevance (0-10): How directly the answer addresses the question
@@ -438,7 +434,7 @@ The Streamlit UI provides:
 
 - **Python**: Chosen for its rich ecosystem of libraries for NLP and document processing
 - **LangChain**: Provides effective abstractions for RAG pipeline components
-- **Streamlit**: Enables rapid UI development with Python, ideal for this application
+- **Streamlit**: Enables UI development with Python, ideal for this application
 - **Chroma DB**: Lightweight vector database with good performance and no external dependencies
 
 ### Embedding and LLM Selection
@@ -463,4 +459,6 @@ The Streamlit UI provides:
 - Built with LangChain for RAG pipeline orchestration
 - Utilizes Chroma DB for vector storage
 - Uses Streamlit for the user interface and matplotlib for visualization
-- Thanks to the maintainers of pypdf, python-docx, python-pptx, and pytesseract
+- Python document libraries including PyPDF2, python-docx, and python-pptx for specialized document processing
+- NumPy & Pandas for data manipulation and analysis capabilities in evaluation system
+- Matplotlib for visualization tools that help represent evaluation metrics

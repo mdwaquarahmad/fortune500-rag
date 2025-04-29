@@ -35,52 +35,76 @@ The system is designed to help users quickly extract and understand information 
 
 ```mermaid
 flowchart TD
+    %% User Interface Component
     subgraph UI["User Interface (Streamlit)"]
-        A1[Document Upload] --> A2[Question Input]
-        A2 --> A3[Response Display]
-        A4[Metadata Filters] --> A2
+        style UI fill:#333333,stroke:#666666,stroke-width:2px,color:white
+        A1["Document Upload"] --> A2["Filter Selection"] 
+        A2 --> A3["Question Input"]
+        A3 --> A4["Response Display"]
     end
-
+    
+    %% Document Processor Component
     subgraph DP["Document Processor"]
-        B1[Document Loader] --> B2[Text Extractor]
-        B2 --> B3[OCR Processor]
-        B2 --> B4[Text Chunker]
+        style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
+        B1["Document Loader"] --> B2["Text Extractor"]
+        B2 --> B3["OCR Processor"]
+        B2 --> B4["Text Chunker"]
         B3 --> B4
+        B1 --> B5["Metadata Extraction"]
     end
-
+    
+    %% Vector Store Component
     subgraph VS["Vector Store"]
-        C1[Embedding Generator] --> C2[Chroma DB]
-        C2 --> C3[Similarity Search]
+        style VS fill:#333333,stroke:#666666,stroke-width:2px,color:white
+        C1["Embedding Generator"] --> C2["Chroma DB"]
+        C2 --> C3["Filtered Similarity Search"]
     end
-
+    
+    %% LLM Integration Component
     subgraph LLM["LLM Integration"]
-        D1[Prompt Builder] --> D2[OpenAI GPT-4o]
-        D2 --> D3[Response Formatter]
+        style LLM fill:#333333,stroke:#666666,stroke-width:2px,color:white
+        D1["Prompt Builder"] --> D2["OpenAI GPT-4o"]
+        D2 --> D3["Response Formatter"]
     end
-
+    
+    %% Evaluation System Component
     subgraph EVAL["Evaluation System"]
-        E1[Metrics Collection] --> E2[LLM-Based Evaluation]
-        E2 --> E3[Reporting & Visualization]
+        style EVAL fill:#333333,stroke:#666666,stroke-width:2px,color:white
+        E1["Metrics Collection"] --> E2["LLM-Based Evaluation"]
+        E2 --> E3["Reporting & Visualization"]
     end
-
-    A1 --> B1
-    B4 --> C1
-    A2 --> C3
-    C3 --> D1
-    D3 --> A3
-    A3 -.-> E1
-
-    classDef primary fill:#42b983,stroke:#333,stroke-width:1px;
-    classDef secondary fill:#ffda9e,stroke:#333,stroke-width:1px;
-    classDef tertiary fill:#aac9ff,stroke:#333,stroke-width:1px;
-    classDef quaternary fill:#ff9e9e,stroke:#333,stroke-width:1px;
-    classDef evaluation fill:#d576c3,stroke:#333,stroke-width:1px;
-
-    class A1,A2,A3,A4 primary;
-    class B1,B2,B3,B4 secondary;
-    class C1,C2,C3 tertiary;
-    class D1,D2,D3 quaternary;
-    class E1,E2,E3 evaluation;
+    
+    %% Main Data Flow Connections
+    A1 -- "Documents" --> B1
+    B4 -- "Chunks" --> C1
+    B5 -- "Metadata" --> C2
+    A3 -- "Query" --> C3
+    A2 -- "Filter criteria" --> C3
+    C3 -- "Retrieved contexts" --> D1
+    D3 -- "Generated response" --> A4
+    
+    %% Evaluation System Connections
+    C3 -. "Retrieval metrics" .-> E1
+    D3 -. "Response metrics" .-> E1
+    A3 -. "Query data" .-> E1
+    
+    %% Styling for specific components
+    classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
+    classDef dpComponents fill:#ffda9e,stroke:#333,stroke-width:2px,color:black,font-weight:bold
+    classDef vsComponents fill:#aac9ff,stroke:#333,stroke-width:2px,color:black,font-weight:bold
+    classDef llmComponents fill:#ff9e9e,stroke:#333,stroke-width:2px,color:black,font-weight:bold
+    classDef evalComponents fill:#d576c3,stroke:#333,stroke-width:2px,color:white,font-weight:bold
+    
+    %% Apply styles to components
+    class A1,A2,A3,A4 uiComponents
+    class B1,B2,B3,B4,B5 dpComponents
+    class C1,C2,C3 vsComponents
+    class D1,D2,D3 llmComponents
+    class E1,E2,E3 evalComponents
+    
+    %% Link styling
+    linkStyle default stroke:#666,stroke-width:2px
+    linkStyle 11,12,13 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown
@@ -240,11 +264,6 @@ The project follows a modular structure with clear separation of concerns:
 5. Create a `.env` file with your OpenAI API key:
    ```
    OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-6. Create necessary directories:
-   ```bash
-   mkdir -p uploads chroma_db
    ```
 
 ## Usage Guide

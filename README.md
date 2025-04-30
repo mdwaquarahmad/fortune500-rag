@@ -75,8 +75,8 @@ flowchart TD
         E2 --> E3["Reporting & Visualization"]
     end
     
-    %% Main Data Flow Connections - All Solid Lines
-    A1 -- "Documents" --> B1
+    %% Main Data Flow Connections
+    A1 --> B1
     B4 -- "Chunks with Metadata" --> C1
     A2 -- "Query" --> C3
     C3 -- "Retrieved contexts" --> D1

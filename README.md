@@ -35,81 +35,87 @@ The system is designed to help users quickly extract and understand information 
 
 ```mermaid
 flowchart TD
-    %% UI Components with specific positioning
+    %% Define all nodes first
+    A1["Document Upload (Step 1)"]
+    A2["User Question Input (Step 2)"]
+    A3["Response Display (Step 3)"]
+    B1["Document Loader"]
+    B2["Metadata Extraction"]
+    B3["Text Extractor / OCR Processor"]
+    B4["Text Chunker"]
+    C1["Embedding Generator"]
+    C2["Chroma DB"]
+    C3["Filtered Similarity Search"]
+    D1["Prompt Builder"]
+    D2["OpenAI GPT-4o"]
+    D3["Response Formatter"]
+    E1["Metrics Collection"]
+    E2["LLM-Based Evaluation"]
+    E3["Reporting & Visualization"]
+    
+    %% Group nodes into subgraphs
     subgraph UI["User Interface (Streamlit)"]
         style UI fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        A1["Document Upload (Step 1)"]
-        A2["User Question Input (Step 2)"]
-        A3["Response Display (Step 3)"]
+        A1
+        A2
+        A3
     end
     
-    %% Document Processor Components
     subgraph DP["Document Processor"]
         style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        B1["Document Loader"]
-        B5["Metadata Extraction"]
-        B2["Text Extractor / OCR Processor"]
-        B4["Text Chunker"]
+        B1
+        B2
+        B3
+        B4
     end
     
-    %% Vector Store Components
     subgraph VS["Vector Store"]
         style VS fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        C1["Embedding Generator"]
-        C2["Chroma DB"]
-        C3["Filtered Similarity Search"]
+        C1
+        C2
+        C3
     end
     
-    %% LLM Integration Components
     subgraph LLM["LLM Integration"]
         style LLM fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        D1["Prompt Builder"]
-        D2["OpenAI GPT-4o"]
-        D3["Response Formatter"]
+        D1
+        D2
+        D3
     end
     
-    %% Evaluation System Components
     subgraph EVAL["Evaluation System"]
         style EVAL fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        E1["Metrics Collection"]
-        E2["LLM-Based Evaluation"]
-        E3["Reporting & Visualization"]
+        E1
+        E2
+        E3
     end
     
-    %% Main connections - Document Processing
+    %% Define solid connections explicitly
     A1 --> B1
-    B1 --> B5
-    B5 --> B2
-    B2 --> B4
-    
-    %% Vector Store connections
-    B4 --> |"Chunks with Metadata"| C1
+    B1 --> B2
+    B2 --> B3
+    B3 --> B4
+    B4 ---> |"Chunks with Metadata"| C1
     C1 --> C2
     C2 --> C3
-    
-    %% User Question to Search
-    A2 --> |"Query"| C3
-    
-    %% Search to LLM
-    C3 --> |"Retrieved contexts"| D1
-    
-    %% LLM connections
+    A2 ---> |"Query"| C3
+    C3 ---> |"Retrieved contexts"| D1
     D1 --> D2
     D2 --> D3
     
-    %% Response to Display
-    D3 --> |"Generated response"| A3
+    %% Special emphasis on this connection being solid
+    D3 ===> |"Generated response"| A3
     
-    %% Evaluation connections - only these are dotted
-    DP -.-> EVAL
-    VS -.-> EVAL
-    LLM -.-> EVAL
+    %% Define evaluation connections as dotted
+    DP -..-> EVAL
+    VS -..-> EVAL
+    LLM -..-> EVAL
     
-    %% Evaluation internal connections
+    %% Solid connections for evaluation system internal flow
     E1 --> E2
     E2 --> E3
     
-    %% Styling for components
+    %% Styling classes
     classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
     classDef dpComponents fill:#ffda9e,stroke:#333,stroke-width:2px,color:black,font-weight:bold
     classDef vsComponents fill:#aac9ff,stroke:#333,stroke-width:2px,color:black,font-weight:bold
@@ -118,13 +124,10 @@ flowchart TD
     
     %% Apply styles
     class A1,A2,A3 uiComponents
-    class B1,B2,B4,B5 dpComponents
+    class B1,B2,B3,B4 dpComponents
     class C1,C2,C3 vsComponents
     class D1,D2,D3 llmComponents
     class E1,E2,E3 evalComponents
-    
-    %% Specify which links should be dotted (ONLY evaluation connections)
-    linkStyle 11,12,13 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

@@ -46,43 +46,57 @@ flowchart TD
     %% Document Processor Component
     subgraph DP["Document Processor"]
         style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        B1["Document Loader"] --> B2["Text Extractor"]
-        B2 --> B3["OCR Processor"]
-        B2 --> B4["Text Chunker"]
-        B3 --> B4
-        B1 --> B5["Metadata Extraction"]
-        B5 --> B2
+        B1["Document Loader"]
+        B2["Text Extractor"]
+        B3["OCR Processor"]
+        B4["Text Chunker"]
+        B5["Metadata Extraction"]
     end
     
     %% Vector Store Component
     subgraph VS["Vector Store"]
         style VS fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        C1["Embedding Generator"] --> C2["Chroma DB"]
-        C2 --> C3["Filtered Similarity Search"]
+        C1["Embedding Generator"]
+        C2["Chroma DB"]
+        C3["Filtered Similarity Search"]
     end
     
     %% LLM Integration Component
     subgraph LLM["LLM Integration"]
         style LLM fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        D1["Prompt Builder"] --> D2["OpenAI GPT-4o"]
-        D2 --> D3["Response Formatter"]
+        D1["Prompt Builder"]
+        D2["OpenAI GPT-4o"]
+        D3["Response Formatter"]
     end
     
     %% Evaluation System Component
     subgraph EVAL["Evaluation System"]
         style EVAL fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        E1["Metrics Collection"] --> E2["LLM-Based Evaluation"]
-        E2 --> E3["Reporting & Visualization"]
+        E1["Metrics Collection"]
+        E2["LLM-Based Evaluation"]
+        E3["Reporting & Visualization"]
     end
     
-    %% Main Data Flow Connections
+    %% Define all connections first
     A1 --> B1
-    B4 -- "Chunks with Metadata" --> C1
-    A2 -- "Query" --> C3
-    C3 -- "Retrieved contexts" --> D1
-    D3 -- "Generated response" --> A3
+    B1 --> B2
+    B2 --> B3
+    B2 --> B4
+    B3 --> B4
+    B1 --> B5
+    B5 --> B2
+    B4 --> C1
+    C1 --> C2
+    C2 --> C3
+    A2 --> C3
+    C3 --> D1
+    D1 --> D2
+    D2 --> D3
+    D3 --> A3
+    E1 --> E2
+    E2 --> E3
     
-    %% Evaluation System Connections - Only These are Dotted Lines
+    %% Evaluation connections (these should be dotted)
     DP -.- EVAL
     VS -.- EVAL
     LLM -.- EVAL
@@ -101,9 +115,28 @@ flowchart TD
     class D1,D2,D3 llmComponents
     class E1,E2,E3 evalComponents
     
-    %% Link styling - Main flow is solid, only evaluation connections are dotted
-    linkStyle default stroke:#666,stroke-width:2px
-    linkStyle 10,11,12 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    %% Explicitly define link styling for every link
+    %% First 17 links are solid, last 3 are dotted
+    linkStyle 0 stroke:#666,stroke-width:2px
+    linkStyle 1 stroke:#666,stroke-width:2px
+    linkStyle 2 stroke:#666,stroke-width:2px
+    linkStyle 3 stroke:#666,stroke-width:2px
+    linkStyle 4 stroke:#666,stroke-width:2px
+    linkStyle 5 stroke:#666,stroke-width:2px
+    linkStyle 6 stroke:#666,stroke-width:2px
+    linkStyle 7 stroke:#666,stroke-width:2px
+    linkStyle 8 stroke:#666,stroke-width:2px
+    linkStyle 9 stroke:#666,stroke-width:2px
+    linkStyle 10 stroke:#666,stroke-width:2px
+    linkStyle 11 stroke:#666,stroke-width:2px
+    linkStyle 12 stroke:#666,stroke-width:2px
+    linkStyle 13 stroke:#666,stroke-width:2px
+    linkStyle 14 stroke:#666,stroke-width:2px
+    linkStyle 15 stroke:#666,stroke-width:2px
+    linkStyle 16 stroke:#666,stroke-width:2px
+    linkStyle 17 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 18 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 19 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

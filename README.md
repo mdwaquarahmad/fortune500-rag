@@ -35,7 +35,7 @@ The system is designed to help users quickly extract and understand information 
 
 ```mermaid
 flowchart TD
-    %% User Interface Component
+    %% UI Components with specific positioning
     subgraph UI["User Interface (Streamlit)"]
         style UI fill:#333333,stroke:#666666,stroke-width:2px,color:white
         A1["Document Upload (Step 1)"]
@@ -43,17 +43,17 @@ flowchart TD
         A3["Response Display (Step 3)"]
     end
     
-    %% Document Processor Component
+    %% Document Processor Components
     subgraph DP["Document Processor"]
         style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
         B1["Document Loader"]
+        B5["Metadata Extraction"]
         B2["Text Extractor"]
         B3["OCR Processor"]
         B4["Text Chunker"]
-        B5["Metadata Extraction"]
     end
     
-    %% Vector Store Component
+    %% Vector Store Components
     subgraph VS["Vector Store"]
         style VS fill:#333333,stroke:#666666,stroke-width:2px,color:white
         C1["Embedding Generator"]
@@ -61,7 +61,7 @@ flowchart TD
         C3["Filtered Similarity Search"]
     end
     
-    %% LLM Integration Component
+    %% LLM Integration Components
     subgraph LLM["LLM Integration"]
         style LLM fill:#333333,stroke:#666666,stroke-width:2px,color:white
         D1["Prompt Builder"]
@@ -69,7 +69,7 @@ flowchart TD
         D3["Response Formatter"]
     end
     
-    %% Evaluation System Component
+    %% Evaluation System Components
     subgraph EVAL["Evaluation System"]
         style EVAL fill:#333333,stroke:#666666,stroke-width:2px,color:white
         E1["Metrics Collection"]
@@ -77,66 +77,56 @@ flowchart TD
         E3["Reporting & Visualization"]
     end
     
-    %% Define connections with orthogonal routing (90-degree angles)
-    A1 --- B1
-    B1 --- B5
-    B5 --- B2
-    B1 --- B2
-    B2 --- B3
-    B3 --- B4
-    B2 --- B4
-    B4 --- C1
-    C1 --- C2
-    C2 --- C3
-    A2 --- C3
-    C3 --- D1
-    D1 --- D2
-    D2 --- D3
-    D3 --- A3
-    E1 --- E2
-    E2 --- E3
+    %% Main connections - Document Processing
+    A1 --> B1
+    B1 --> B5
+    B5 --> B2
+    B2 --> B3
+    B3 --> B4
     
-    %% Evaluation connections (dotted)
-    DP -.- EVAL
-    VS -.- EVAL
-    LLM -.- EVAL
+    %% Vector Store connections
+    B4 --> |"Chunks with Metadata"| C1
+    C1 --> C2
+    C2 --> C3
     
-    %% Styling for specific components
+    %% User Question to Search
+    A2 --> |"Query"| C3
+    
+    %% Search to LLM
+    C3 --> |"Retrieved contexts + Query"| D1
+    
+    %% LLM connections
+    D1 --> D2
+    D2 --> D3
+    
+    %% Response to Display
+    D3 --> |"Generated response"| A3
+    
+    %% Evaluation connections - only these are dotted
+    DP -.-> EVAL
+    VS -.-> EVAL
+    LLM -.-> EVAL
+    
+    %% Evaluation internal connections
+    E1 --> E2
+    E2 --> E3
+    
+    %% Styling for components
     classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
     classDef dpComponents fill:#ffda9e,stroke:#333,stroke-width:2px,color:black,font-weight:bold
     classDef vsComponents fill:#aac9ff,stroke:#333,stroke-width:2px,color:black,font-weight:bold
     classDef llmComponents fill:#ff9e9e,stroke:#333,stroke-width:2px,color:black,font-weight:bold
     classDef evalComponents fill:#d576c3,stroke:#333,stroke-width:2px,color:white,font-weight:bold
     
-    %% Apply styles to components
+    %% Apply styles
     class A1,A2,A3 uiComponents
     class B1,B2,B3,B4,B5 dpComponents
     class C1,C2,C3 vsComponents
     class D1,D2,D3 llmComponents
     class E1,E2,E3 evalComponents
     
-    %% Explicitly define link styling for every link
-    %% First 17 links are solid, last 3 are dotted
-    linkStyle 0 stroke:#666,stroke-width:2px
-    linkStyle 1 stroke:#666,stroke-width:2px
-    linkStyle 2 stroke:#666,stroke-width:2px
-    linkStyle 3 stroke:#666,stroke-width:2px
-    linkStyle 4 stroke:#666,stroke-width:2px
-    linkStyle 5 stroke:#666,stroke-width:2px
-    linkStyle 6 stroke:#666,stroke-width:2px
-    linkStyle 7 stroke:#666,stroke-width:2px
-    linkStyle 8 stroke:#666,stroke-width:2px
-    linkStyle 9 stroke:#666,stroke-width:2px
-    linkStyle 10 stroke:#666,stroke-width:2px
-    linkStyle 11 stroke:#666,stroke-width:2px
-    linkStyle 12 stroke:#666,stroke-width:2px
-    linkStyle 13 stroke:#666,stroke-width:2px
-    linkStyle 14 stroke:#666,stroke-width:2px
-    linkStyle 15 stroke:#666,stroke-width:2px
-    linkStyle 16 stroke:#666,stroke-width:2px
-    linkStyle 17 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
-    linkStyle 18 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
-    linkStyle 19 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    %% Specify dashed lines for evaluation connections only
+    linkStyle 12,13,14 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

@@ -90,28 +90,26 @@ flowchart TD
         E3
     end
     
-    %% Define solid connections explicitly
+    %% Define all connections as normal arrows with the same style
     A1 --> B1
     B1 --> B2
     B2 --> B3
     B3 --> B4
-    B4 ---> |"Chunks with Metadata"| C1
+    B4 --> |"Chunks with Metadata"| C1
     C1 --> C2
     C2 --> C3
-    A2 ---> |"Query"| C3
-    C3 ---> |"Retrieved contexts"| D1
+    A2 --> |"Query"| C3
+    C3 --> |"Retrieved contexts"| D1
     D1 --> D2
     D2 --> D3
-    
-    %% Special emphasis on this connection being solid
-    D3 ===> |"Generated response"| A3
+    D3 --> |"Generated response"| A3
     
     %% Define evaluation connections as dotted
-    DP -..-> EVAL
-    VS -..-> EVAL
-    LLM -..-> EVAL
+    DP -.-> EVAL
+    VS -.-> EVAL
+    LLM -.-> EVAL
     
-    %% Solid connections for evaluation system internal flow
+    %% Evaluation internal connections
     E1 --> E2
     E2 --> E3
     

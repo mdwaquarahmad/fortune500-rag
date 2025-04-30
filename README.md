@@ -48,8 +48,7 @@ flowchart TD
         style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
         B1["Document Loader"]
         B5["Metadata Extraction"]
-        B2["Text Extractor"]
-        B3["OCR Processor"]
+        B2["Text Extractor / OCR Processor"]
         B4["Text Chunker"]
     end
     
@@ -81,8 +80,7 @@ flowchart TD
     A1 --> B1
     B1 --> B5
     B5 --> B2
-    B2 --> B3
-    B3 --> B4
+    B2 --> B4
     
     %% Vector Store connections
     B4 --> |"Chunks with Metadata"| C1
@@ -93,7 +91,7 @@ flowchart TD
     A2 --> |"Query"| C3
     
     %% Search to LLM
-    C3 --> |"Retrieved contexts + Query"| D1
+    C3 --> |"Retrieved contexts"| D1
     
     %% LLM connections
     D1 --> D2
@@ -120,13 +118,13 @@ flowchart TD
     
     %% Apply styles
     class A1,A2,A3 uiComponents
-    class B1,B2,B3,B4,B5 dpComponents
+    class B1,B2,B4,B5 dpComponents
     class C1,C2,C3 vsComponents
     class D1,D2,D3 llmComponents
     class E1,E2,E3 evalComponents
     
     %% Specify dashed lines for evaluation connections only
-    linkStyle 12,13,14 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 11,12,13 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

@@ -123,7 +123,7 @@ flowchart TD
     class D1,D2,D3 llmComponents
     class E1,E2,E3 evalComponents
     
-    %% Specify dashed lines for evaluation connections only
+    %% Specify which links should be dotted (ONLY evaluation connections)
     linkStyle 11,12,13 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 

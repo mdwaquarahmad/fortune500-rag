@@ -491,3 +491,4 @@ The Streamlit UI provides:
 - Python document libraries including pypdf, python-docx, python-pptx, and pytesseract for specialized document processing
 - NumPy & Pandas for data manipulation and analysis capabilities in evaluation system
 - Matplotlib for visualization tools that help represent evaluation metrics
+- PyTest to perform comprehensive unit testing of all core components (document processor, vector store, LLM integration)

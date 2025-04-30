@@ -46,11 +46,11 @@ flowchart TD
     %% Document Processor Component
     subgraph DP["Document Processor"]
         style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        B1["Document Loader"] --> B5["Metadata Extraction"]
-        B5 --> B2["Text Extractor"]
+        B1["Document Loader"] --> B2["Text Extractor"]
         B2 --> B3["OCR Processor"]
         B2 --> B4["Text Chunker"]
         B3 --> B4
+        B1 --> B5["Metadata Extraction"]
     end
     
     %% Vector Store Component
@@ -76,17 +76,16 @@ flowchart TD
     
     %% Main Data Flow Connections - Solid Lines
     A1 -- "Documents" --> B1
-    B4 -- "Chunks with Metadata" --> C1
+    B4 -- "Chunks" --> C1
+    B5 -- "Metadata" --> C2
     A2 -- "Query" --> C3
     C3 -- "Retrieved contexts + query" --> D1
     D3 -- "Generated response" --> A3
     
-    %% Evaluation System Connection - Horizontal Line
-    EVAL -.- LLM
-    
-    %% Other evaluation connections
-    EVAL -.- DP
-    EVAL -.- VS
+    %% Evaluation System Connections - Now with horizontal line to LLM
+    EVAL --- LLM
+    DP -.- EVAL
+    VS -.- EVAL
     
     %% Styling for specific components
     classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
@@ -104,7 +103,7 @@ flowchart TD
     
     %% Link styling
     linkStyle default stroke:#666,stroke-width:2px
-    linkStyle 7,8,9 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 8,9 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

@@ -51,12 +51,6 @@ flowchart TD
         B2["Text Extractor"]
         B3["OCR Processor"]
         B4["Text Chunker"]
-        
-        %% Internal document processor connections with right angles
-        B1 --> B5
-        B5 --> B2
-        B2 --> B3
-        B3 --> B4
     end
     
     %% Vector Store Component
@@ -65,10 +59,6 @@ flowchart TD
         C1["Embedding Generator"]
         C2["Chroma DB"]
         C3["Filtered Similarity Search"]
-        
-        %% Internal vector store connections
-        C1 --> C2
-        C2 --> C3
     end
     
     %% LLM Integration Component
@@ -77,10 +67,6 @@ flowchart TD
         D1["Prompt Builder"]
         D2["OpenAI GPT-4o"]
         D3["Response Formatter"]
-        
-        %% Internal LLM connections
-        D1 --> D2
-        D2 --> D3
     end
     
     %% Evaluation System Component
@@ -89,23 +75,36 @@ flowchart TD
         E1["Metrics Collection"]
         E2["LLM-Based Evaluation"]
         E3["Reporting & Visualization"]
-        
-        %% Internal evaluation connections
-        E1 --> E2
-        E2 --> E3
     end
     
-    %% External connections between components with orthogonal routing
+    %% Connections maintaining original flow but with improved angles
+    %% Document processing flow
     A1 -- "Documents" --> B1
+    B1 --> B5
+    B5 --> B2
+    B2 --> B3
+    B3 --> B4
+    
+    %% Vector store flow
     B4 -- "Chunks with Metadata" --> C1
+    C1 --> C2
+    C2 --> C3
+    
+    %% Question and response flow
     A2 -- "Query" --> C3
     C3 -- "Retrieved contexts" --> D1
+    D1 --> D2
+    D2 --> D3
     D3 -- "Generated response" --> A3
     
-    %% Evaluation System Connections - with orthogonal routing
-    DP -..- EVAL
-    VS -..- EVAL
-    LLM -..- EVAL
+    %% Evaluation System Connections - with straight dotted lines
+    B4 -.- E1
+    C2 -.- E1
+    LLM -.- E1
+    
+    %% Internal evaluation connections
+    E1 --> E2
+    E2 --> E3
     
     %% Styling for specific components
     classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
@@ -123,7 +122,7 @@ flowchart TD
     
     %% Add link styling
     linkStyle default stroke:#666,stroke-width:2px
-    linkStyle 10,11,12 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 12,13,14 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
 ```
 
 ### Component Breakdown

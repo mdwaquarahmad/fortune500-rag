@@ -51,6 +51,7 @@ flowchart TD
         B2 --> B4["Text Chunker"]
         B3 --> B4
         B1 --> B5["Metadata Extraction"]
+        B5 --> B2
     end
     
     %% Vector Store Component
@@ -76,8 +77,7 @@ flowchart TD
     
     %% Main Data Flow Connections - Solid Lines
     A1 -- "Documents" --> B1
-    B4 -- "Chunks" --> C1
-    B5 -- "Metadata" --> C2
+    B4 -- "Chunks with Metadata" --> C1
     A2 -- "Query" --> C3
     C3 -- "Retrieved contexts" --> D1
     D3 -- "Generated response" --> A3
@@ -338,6 +338,13 @@ Each test file contains multiple test cases that verify both expected functional
 
 The evaluation system measures the latency, accuracy, relevance, and completeness of the RAG chatbot. It provides quantitative metrics and visualizations to assess the quality of responses.
 
+### Sample File for Evaluation
+
+The evaluation system is specifically designed to work with the Amazon 2023 Annual Report, which should be stored in the system:
+
+- The test questions in the evaluation system are based on content from this specific document
+- Please upload `Amazon-com-Inc-2023-Annual-Report.pdf` file through Streamlit interface before running evaluation, you can find it in the `docs/pdf` folder of the project repository
+
 ### Evaluation Metrics
 
 The system measures:
@@ -459,6 +466,6 @@ The Streamlit UI provides:
 - Built with LangChain for RAG pipeline orchestration
 - Utilizes Chroma DB for vector storage
 - Uses Streamlit for the user interface and matplotlib for visualization
-- Python document libraries including PyPDF2, python-docx, and python-pptx for specialized document processing
+- Python document libraries including pypdf, python-docx, python-pptx, and pytesseract for specialized document processing
 - NumPy & Pandas for data manipulation and analysis capabilities in evaluation system
 - Matplotlib for visualization tools that help represent evaluation metrics

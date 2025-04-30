@@ -77,26 +77,26 @@ flowchart TD
         E3["Reporting & Visualization"]
     end
     
-    %% Define all connections first
-    A1 --> B1
-    B1 --> B2
-    B2 --> B3
-    B2 --> B4
-    B3 --> B4
-    B1 --> B5
-    B5 --> B2
-    B4 --> C1
-    C1 --> C2
-    C2 --> C3
-    A2 --> C3
-    C3 --> D1
-    D1 --> D2
-    D2 --> D3
-    D3 --> A3
-    E1 --> E2
-    E2 --> E3
+    %% Define connections with orthogonal routing (90-degree angles)
+    A1 --- B1
+    B1 --- B5
+    B5 --- B2
+    B1 --- B2
+    B2 --- B3
+    B3 --- B4
+    B2 --- B4
+    B4 --- C1
+    C1 --- C2
+    C2 --- C3
+    A2 --- C3
+    C3 --- D1
+    D1 --- D2
+    D2 --- D3
+    D3 --- A3
+    E1 --- E2
+    E2 --- E3
     
-    %% Evaluation connections (these should be dotted)
+    %% Evaluation connections (dotted)
     DP -.- EVAL
     VS -.- EVAL
     LLM -.- EVAL

@@ -45,7 +45,7 @@ flowchart TD
     B4["Text Chunker"]
     C1["Embedding Generator"]
     C2["Chroma DB"]
-    C3["Filtered Similarity Search"]
+    C3["Vector Similarity Search"]
     D1["Prompt Builder"]
     D2["OpenAI GPT-4o"]
     D3["Response Formatter"]
@@ -99,7 +99,7 @@ flowchart TD
     C1 --> C2
     C2 --> C3
     A2 --> |"Query"| C3
-    C3 --> |"Retrieved contexts"| D1
+    C3 --> |"Retrieved contexts Query"| D1
     D1 --> D2
     D2 --> D3
     D3 --> |"Generated response"| A3

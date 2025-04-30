@@ -34,6 +34,7 @@ The system is designed to help users quickly extract and understand information 
 ### High-Level Design
 
 ```mermaid
+```mermaid
 flowchart TD
     %% User Interface Component
     subgraph UI["User Interface (Streamlit)"]
@@ -46,46 +47,66 @@ flowchart TD
     %% Document Processor Component
     subgraph DP["Document Processor"]
         style DP fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        B1["Document Loader"] --> B2["Text Extractor"]
-        B2 --> B3["OCR Processor"]
-        B2 --> B4["Text Chunker"]
-        B3 --> B4
-        B1 --> B5["Metadata Extraction"]
+        B1["Document Loader"]
+        B5["Metadata Extraction"]
+        B2["Text Extractor"]
+        B3["OCR Processor"]
+        B4["Text Chunker"]
+        
+        %% Internal document processor connections with right angles
+        B1 --> B5
         B5 --> B2
+        B2 --> B3
+        B3 --> B4
     end
     
     %% Vector Store Component
     subgraph VS["Vector Store"]
         style VS fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        C1["Embedding Generator"] --> C2["Chroma DB"]
-        C2 --> C3["Filtered Similarity Search"]
+        C1["Embedding Generator"]
+        C2["Chroma DB"]
+        C3["Filtered Similarity Search"]
+        
+        %% Internal vector store connections
+        C1 --> C2
+        C2 --> C3
     end
     
     %% LLM Integration Component
     subgraph LLM["LLM Integration"]
         style LLM fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        D1["Prompt Builder"] --> D2["OpenAI GPT-4o"]
-        D2 --> D3["Response Formatter"]
+        D1["Prompt Builder"]
+        D2["OpenAI GPT-4o"]
+        D3["Response Formatter"]
+        
+        %% Internal LLM connections
+        D1 --> D2
+        D2 --> D3
     end
     
     %% Evaluation System Component
     subgraph EVAL["Evaluation System"]
         style EVAL fill:#333333,stroke:#666666,stroke-width:2px,color:white
-        E1["Metrics Collection"] --> E2["LLM-Based Evaluation"]
-        E2 --> E3["Reporting & Visualization"]
+        E1["Metrics Collection"]
+        E2["LLM-Based Evaluation"]
+        E3["Reporting & Visualization"]
+        
+        %% Internal evaluation connections
+        E1 --> E2
+        E2 --> E3
     end
     
-    %% Main Data Flow Connections - Solid Lines
+    %% External connections between components with orthogonal routing
     A1 -- "Documents" --> B1
     B4 -- "Chunks with Metadata" --> C1
     A2 -- "Query" --> C3
     C3 -- "Retrieved contexts" --> D1
     D3 -- "Generated response" --> A3
     
-    %% Evaluation System Connections - Dotted Lines (no arrows)
-    DP -.- EVAL
-    VS -.- EVAL
-    LLM -.- EVAL
+    %% Evaluation System Connections - with orthogonal routing
+    DP -..- EVAL
+    VS -..- EVAL
+    LLM -..- EVAL
     
     %% Styling for specific components
     classDef uiComponents fill:#42b983,stroke:#333,stroke-width:2px,color:black,font-weight:bold
@@ -101,9 +122,10 @@ flowchart TD
     class D1,D2,D3 llmComponents
     class E1,E2,E3 evalComponents
     
-    %% Link styling
+    %% Add link styling
     linkStyle default stroke:#666,stroke-width:2px
-    linkStyle 6,7,8 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+    linkStyle 10,11,12 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
+```
 ```
 
 ### Component Breakdown

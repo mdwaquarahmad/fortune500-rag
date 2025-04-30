@@ -34,7 +34,6 @@ The system is designed to help users quickly extract and understand information 
 ### High-Level Design
 
 ```mermaid
-```mermaid
 flowchart TD
     %% User Interface Component
     subgraph UI["User Interface (Streamlit)"]
@@ -125,7 +124,6 @@ flowchart TD
     %% Add link styling
     linkStyle default stroke:#666,stroke-width:2px
     linkStyle 10,11,12 stroke:#666,stroke-width:2px,stroke-dasharray:5 5
-```
 ```
 
 ### Component Breakdown

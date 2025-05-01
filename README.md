@@ -182,7 +182,7 @@ flowchart TD
 - **Metadata Tagging**: Associates company name, year, and document type with chunks
 - **Vector Similarity Search**: Retrieves the most relevant content for each query
 - **Contextual Response Generation**: Uses GPT-4o to produce accurate, helpful answers
-- **Source Attribution**: Cites the specific document sources used in responses
+- **Source Attribution**: Cites the specific document sources used in responses (company name, year, source/document name, page number, slide number, section (tables/paragraphs))
 - **Intuitive User Interface**: Clean Streamlit interface for document upload and interaction
 - **Metadata Filtering**: Allows users to filter queries by company or year
 - **Comprehensive Evaluation System**: Built-in tools to measure accuracy, completeness, relevance, and latency
@@ -316,7 +316,7 @@ The application will be available at `http://localhost:8501`.
    - Search for relevant information in your documents
    - Generate a response based on the retrieved content
    - Display the answer with proper formatting for financial data
-   - Include citations to the source documents
+   - Include citations to the source documents (company name, year, source/document name, page number, slide number, section (tables/paragraphs))
 
 ### Example Queries
 

@@ -193,12 +193,12 @@ flowchart TD
 
 ```
 fortune500-rag/
-├── docs/              # sample documents for testing
+├── docs/              			# Sample documents for testing
 │   ├── pdf/
 │   ├── docx/
 │   ├── pptx/
 │   └── images/
-├── evaluation/
+├── evaluation/				# Evaluation system
 │   ├── results/
 │   │   ├── visualizations/
 │   │   ├── [evaluation result files]
@@ -208,38 +208,38 @@ fortune500-rag/
 │   ├── run_evaluation.py
 │   └── test_data.py
 ├── src/
-│   ├── document_processor/
+│   ├── document_processor/		# Document processor
 │   │   ├── __init__.py
-│   │   ├── chunker.py
-│   │   ├── loader.py
-│   │   ├── ocr.py
-│   │   └── text_extractor.py
-│   ├── llm/
+│   │   ├── chunker.py			# Text chunking strategies
+│   │   ├── loader.py			# Document loading logic
+│   │   ├── ocr.py			# OCR for image processing
+│   │   └── text_extractor.py		# Text extraction from various formats
+│   ├── llm/				# LLM integration
 │   │   ├── __init__.py
-│   │   ├── prompt_templates.py
-│   │   └── response_generator.py
+│   │   ├── prompt_templates.py		# Prompt engineering
+│   │   └── response_generator.py	# LLM response handling
 │   ├── ui/
 │   │   ├── __init__.py
-│   │   └── app.py
-│   ├── utils/
+│   │   └── app.py			# Streamlit application
+│   ├── utils/				# Utility functions
 │   │   ├── __init__.py
 │   │   └── helpers.py
-│   ├── vector_store/
+│   ├── vector_store/			# Vector database
 │   │   ├── __init__.py
-│   │   ├── embeddings.py
-│   │   └── store.py
+│   │   ├── embeddings.py		# Embedding generation
+│   │   └── store.py			# Vector store operations
 │   ├── __init__.py
-│   └── config.py
-├── tests/
+│   └── config.py			# Configuration settings
+├── tests/				# Unit tests
 │   ├── __init__.py
 │   ├── test_document_processor.py
 │   ├── test_llm.py
 │   └── test_vector_store.py
-├── uploads/           # Document storage directory
-├── chroma_db/         # Vector database storage
+├── uploads/           			# Document storage directory
+├── chroma_db/        			# Vector database storage
 ├── .env
 ├── .gitignore
-├── main.py            # Main entry point
+├── main.py            			# Main entry point
 ├── README.md
 └── requirements.txt
 ```
